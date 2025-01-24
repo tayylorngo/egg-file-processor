@@ -19,17 +19,18 @@ app.add_middleware(
 @app.post("/upload/")
 async def process_file(file: UploadFile = File(...), rules: str = Form(...)):
     workbook = load_workbook(file.file)
-    sheet = workbook.active
+    sheet = workbook["Student Marks"]
 
     # Parse and validate rules
     rules = json.loads(rules)  # Convert JSON string to Python list
 
     for rule in rules:
+        print(rules)
         if rule["changeTo"] == "N/A":
             continue  # Skip rules with no change
 
-        min_grade = int(rule["min"])
-        max_grade = int(rule["max"])
+        min_grade = int(rule["minGrade"])
+        max_grade = int(rule["maxGrade"])
         change_to = int(rule["changeTo"])
 
         if not (0 <= min_grade <= 100 and 0 <= max_grade <= 100 and 0 <= change_to <= 100):
@@ -52,7 +53,7 @@ async def process_file(file: UploadFile = File(...), rules: str = Form(...)):
             for rule in rules:
                 if rule["changeTo"] == "N/A":
                     continue
-                if float(rule["min"]) <= grade <= float(rule["max"]):
+                if float(rule["minGrade"]) <= grade <= float(rule["maxGrade"]):
                     grade_cell.value = float(rule["changeTo"])
                     break
 
