@@ -1,12 +1,20 @@
 import React, { useState } from "react";
-import "./GradeRuleModal.css"; // Import modal styles
+import "./GradeRuleModal.css";
 
 const GradeRuleModal = ({ isOpen, onClose, onAddRule }) => {
   const [newRule, setNewRule] = useState({ min: "", max: "", changeTo: "" });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewRule({ ...newRule, [name]: value });
+
+    // Allow only numbers between 0 and 100
+    if (name === "min" || name === "max" || name === "changeTo") {
+      if (value === "" || (Number(value) >= 0 && Number(value) <= 100)) {
+        setNewRule({ ...newRule, [name]: value });
+      }
+    } else {
+      setNewRule({ ...newRule, [name]: value });
+    }
   };
 
   const handleAddRule = () => {
@@ -14,6 +22,13 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule }) => {
       alert("Please fill in all fields.");
       return;
     }
+
+    // Ensure min <= max
+    if (Number(newRule.min) > Number(newRule.max)) {
+      alert("Minimum grade cannot be greater than maximum grade.");
+      return;
+    }
+
     onAddRule(newRule); // Pass the new rule back to the parent
     setNewRule({ min: "", max: "", changeTo: "" }); // Reset the form
     onClose(); // Close the modal
@@ -32,6 +47,8 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule }) => {
             name="min"
             value={newRule.min}
             onChange={handleInputChange}
+            min="0"
+            max="100"
           />
         </div>
         <div className="form-group">
@@ -41,6 +58,8 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule }) => {
             name="max"
             value={newRule.max}
             onChange={handleInputChange}
+            min="0"
+            max="100"
           />
         </div>
         <div className="form-group">
@@ -50,6 +69,8 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule }) => {
             name="changeTo"
             value={newRule.changeTo}
             onChange={handleInputChange}
+            min="0"
+            max="100"
           />
         </div>
         <button onClick={handleAddRule} className="btn">Add Rule</button>
