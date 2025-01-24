@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./GradeRuleModal.css"; // Import modal styles
 
 const GradeRuleModal = ({ isOpen, onClose, onAddRule }) => {
   const [newRule, setNewRule] = useState({ min: "", max: "", changeTo: "" });

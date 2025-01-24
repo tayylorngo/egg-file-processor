@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import GradeRuleModal from "./components/GradeRuleModal";
-import GradeRuleList from "./components/GradeRuleList";
+import GradeRuleModal from "./components/GradeRuleModal/GradeRuleModal";
+import GradeRuleList from "./components/GradeRuleList/GradeRuleList";
 import "./App.css";
 
 function App() {
