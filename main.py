@@ -48,14 +48,21 @@ async def process_file(file: UploadFile = File(...), rules: str = Form(...)):
     # Apply rules to grades
     for row in range(2, sheet.max_row + 1):
         grade_cell = sheet.cell(row=row, column=11)  # Column K
-        if grade_cell.value is not None and isinstance(grade_cell.value, (int, float)):
+        if grade_cell.value is not None:
             grade = float(grade_cell.value)
             for rule in rules:
-                if rule["changeTo"] == "N/A":
-                    continue
                 if float(rule["minGrade"]) <= grade <= float(rule["maxGrade"]):
-                    grade_cell.value = float(rule["changeTo"])
-                    break
+                    print(grade)
+                    if rule["changeTo"] != "N/A":
+                        grade_cell.value = float(rule["changeTo"])
+                    comments = rule["comments"]
+                    if comments[0] != "N/A":
+                        sheet.cell(row=row, column=12).value = comments[0] # Column L
+                    if comments[1] != "N/A":
+                        sheet.cell(row=row, column=13).value = comments[1] # Column M
+                    if comments[2] != "N/A":
+                        sheet.cell(row=row, column=14).value = comments[2] # Column M
+                break
 
     # Save the workbook
     output = BytesIO()
