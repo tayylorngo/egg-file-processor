@@ -33,6 +33,10 @@
     align-items: center;
 }
 
+.modal-title {
+    text-align: center;
+}
+
 .centered-modal .modal-content {
     background: white;
     padding: 20px;
@@ -48,11 +52,11 @@
     display: flex;
     justify-content: space-between; /* Space out the inputs */
     gap: 10px; /* Add spacing between the inputs */
-    margin-bottom: 15px;
   }
   
   .form-group {
     flex: 1; /* Make inputs equal width */
+    padding: 20px;
   }
 
   .form-row {
@@ -64,14 +68,9 @@
   .half-width {
     flex: 1;
   }
-  
-  
-  input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+
+  .select-form {
+    margin-top: 10px;
   }
   
   button {
@@ -84,8 +83,3 @@
     cursor: pointer;
     font-size: 16px;
   }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  

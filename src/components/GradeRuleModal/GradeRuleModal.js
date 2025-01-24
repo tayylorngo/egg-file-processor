@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import "./GradeRuleModal.css";
 import commentsData from "./comments.json";
+import "bootstrap/dist/css/bootstrap.css"
 
 const generateGradeOptions = () => {
-  return Array.from({ length: 101 }, (_, i) => ({ value: i, label: i.toString() }));
+    let options =  Array.from({ length: 101 }, (_, i) => ({ value: i, label: i.toString() }));
+    return [options, [...options].reverse()];
 };
 
 const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
@@ -95,46 +97,49 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
   return (
     <div className="modal-overlay centered-modal">
       <div className="modal-content">
-        <h2>Add Grade Rule</h2>
+        <h2 className="modal-title">Add Grade Criteria</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-row">
             <div className="form-group half-width">
               <label>Min Grade:</label>
               <Select
-                options={gradeOptions}
+                options={gradeOptions[0]}
                 value={minGrade}
                 onChange={(option) => setMinGrade(option)}
                 filterOption={customFilter}
                 placeholder="Select or type a grade..."
+                className="select-form"
               />
             </div>
 
             <div className="form-group half-width">
               <label>Max Grade:</label>
               <Select
-                options={gradeOptions}
+                options={gradeOptions[1]}
                 value={maxGrade}
                 onChange={(option) => setMaxGrade(option)}
                 filterOption={customFilter}
                 placeholder="Select or type a grade..."
+                className="select-form"
               />
             </div>
           </div>
 
           <div className="form-group">
-            <label>Change To (Optional):</label>
+            <label>Change To:</label>
             <Select
-              options={gradeOptions}
+              options={gradeOptions[0]}
               value={changeTo}
               onChange={(option) => setChangeTo(option)}
               filterOption={customFilter}
               isClearable
               placeholder="Select or type a grade..."
+              className="select-form"
             />
           </div>
 
           <div className="form-group">
-            <label>Comment Code 1 (Optional):</label>
+            <label>Comment Code 1:</label>
             <Select
               options={commentOptions}
               value={commentOptions.find((option) => option.value === comment1)}
@@ -142,11 +147,12 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
               isClearable
               filterOption={customFilter}
               placeholder="Type or select a comment..."
+              className="select-form"
             />
           </div>
 
           <div className="form-group">
-            <label>Comment Code 2 (Optional):</label>
+            <label>Comment Code 2:</label>
             <Select
               options={commentOptions}
               value={commentOptions.find((option) => option.value === comment2)}
@@ -154,11 +160,12 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
               isClearable
               filterOption={customFilter}
               placeholder="Type or select a comment..."
+              className="select-form"
             />
           </div>
 
           <div className="form-group">
-            <label>Comment Code 3 (Optional):</label>
+            <label>Comment Code 3:</label>
             <Select
               options={commentOptions}
               value={commentOptions.find((option) => option.value === comment3)}
@@ -166,15 +173,15 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
               isClearable
               filterOption={customFilter}
               placeholder="Type or select a comment..."
+              className="select-form"
             />
           </div>
-
-          <button type="submit" className="btn">
-            Add Rule
-          </button>
-          <button type="button" className="btn btn-small" onClick={closeAndResetForm}>
-            Cancel
-          </button>
+          <div className="text-center row form-group">
+            <button type="submit" className="btn btn-success mb-1">
+              Add
+            </button>
+            <button type="button" className="btn btn-danger" onClick={closeAndResetForm}>Cancel</button>
+          </div>
         </form>
       </div>
     </div>

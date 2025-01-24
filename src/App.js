@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import GradeRuleModal from "./components/GradeRuleModal/GradeRuleModal";
 import GradeRuleList from "./components/GradeRuleList/GradeRuleList";
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.css"
 
 function App() {
   const [file, setFile] = useState(null);
@@ -67,17 +68,16 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <h1>Excel File Processor</h1>
-      <p>Upload your Excel file and define grade rules.</p>
+    <div className="container pb-1">
+      <h1 className="fs-1">EGG File Processor</h1>
+      <p className="mb-1 fs-5">Upload your EGG file (.xlsx) and define your grade criteria.</p>
 
       <div className="form-group">
-        <label htmlFor="formFile">Upload your Excel file:</label>
         <input type="file" id="formFile" onChange={handleFileChange} />
       </div>
 
-      <button onClick={toggleModal} className="btn">Add Custom Grade Rule</button>
 
+      <div className="mt-1 border border-1 mb-2 p-3 text-center">
       <GradeRuleList
           rules={rules.map(rule => ({
             minGrade: rule.minGrade,
@@ -86,11 +86,15 @@ function App() {
             comments: rule.comments,
           }))}
           onRemoveRule={handleRemoveRule}
-/>
+      />
+      <button onClick={toggleModal} className="btn btn-primary w-50">Add Grade Criteria</button>
+      </div>
 
-      <button onClick={handleFileUpload} className="btn">Upload and Process</button>
+      <div className="row">
+        <button onClick={handleFileUpload} className="btn btn-success mt-3">Upload and Process</button>
+      </div>
 
-      <p className="message">{message}</p>
+      <p className="message mt-3">{message}</p>
 
       {downloadUrl && (
         <a href={downloadUrl} download="processed_grades.xlsx" className="download-link">
