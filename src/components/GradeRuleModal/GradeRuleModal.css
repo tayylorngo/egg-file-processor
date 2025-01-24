@@ -54,6 +54,17 @@
   .form-group {
     flex: 1; /* Make inputs equal width */
   }
+
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  
+  .half-width {
+    flex: 1;
+  }
+  
   
   input {
     width: 100%;

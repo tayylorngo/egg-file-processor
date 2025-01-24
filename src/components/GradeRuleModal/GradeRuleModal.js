@@ -1,35 +1,70 @@
-// Updated GradeRuleModal component to support 3 comment codes per grade range with centered modal.
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Select from "react-select";
 import "./GradeRuleModal.css";
+import commentsData from "./comments.json";
+
+const generateGradeOptions = () => {
+  return Array.from({ length: 101 }, (_, i) => ({ value: i, label: i.toString() }));
+};
 
 const GradeRuleModal = ({ isOpen, onClose, onAddRule }) => {
-  const [minGrade, setMinGrade] = useState(0);
-  const [maxGrade, setMaxGrade] = useState(100);
-  const [changeTo, setChangeTo] = useState("");
+  const [minGrade, setMinGrade] = useState({ value: 0, label: "0" });
+  const [maxGrade, setMaxGrade] = useState({ value: 100, label: "100" });
+  const [changeTo, setChangeTo] = useState(null);
   const [comment1, setComment1] = useState("");
   const [comment2, setComment2] = useState("");
   const [comment3, setComment3] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newRule = {
-      minGrade,
-      maxGrade,
-      changeTo: changeTo ? parseInt(changeTo) : "N/A",
-      comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
-    };
-    onAddRule(newRule);
+  const [commentOptions, setCommentOptions] = useState([]);
+  const gradeOptions = generateGradeOptions();
+
+  useEffect(() => {
+    // Load comment options from JSON
+    const options = Object.entries(commentsData).map(([code, description]) => ({
+      value: code,
+      label: `${code} - ${description}`,
+    }));
+    setCommentOptions(options);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      resetForm(); // Reset the form every time the modal is opened
+    }
+  }, [isOpen]);
+
+  const closeAndResetForm = () => {
     resetForm();
     onClose();
-  };
+  }
 
   const resetForm = () => {
-    setMinGrade();
-    setMaxGrade();
-    setChangeTo("");
+    setMinGrade({ value: 0, label: "0" });
+    setMaxGrade({ value: 100, label: "100" });
+    setChangeTo(null);
     setComment1("");
     setComment2("");
     setComment3("");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    resetForm();
+    const newRule = {
+      minGrade: minGrade.value,
+      maxGrade: maxGrade.value,
+      changeTo: changeTo ? changeTo.value : "N/A",
+      comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
+    };
+    onAddRule(newRule);
+    onClose(); // Close the modal after submitting
+  };
+
+  const customFilter = (option, inputValue) => {
+    return (
+      option.label.toLowerCase().includes(inputValue.toLowerCase()) ||
+      option.value.toString().includes(inputValue)
+    );
   };
 
   if (!isOpen) return null;
@@ -39,72 +74,82 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule }) => {
       <div className="modal-content">
         <h2>Add Grade Rule</h2>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Min Grade:</label>
-            <input
-              type="number"
-              value={minGrade}
-              min="0"
-              max="100"
-              onChange={(e) => setMinGrade(parseInt(e.target.value))}
-              required
-            />
-          </div>
+          <div className="form-row">
+            <div className="form-group half-width">
+              <label>Min Grade:</label>
+              <Select
+                options={gradeOptions}
+                value={minGrade}
+                onChange={(option) => setMinGrade(option)}
+                filterOption={customFilter}
+                placeholder="Select or type a grade..."
+              />
+            </div>
 
-          <div className="form-group">
-            <label>Max Grade:</label>
-            <input
-              type="number"
-              value={maxGrade}
-              min="0"
-              max="100"
-              onChange={(e) => setMaxGrade(parseInt(e.target.value))}
-              required
-            />
+            <div className="form-group half-width">
+              <label>Max Grade:</label>
+              <Select
+                options={gradeOptions}
+                value={maxGrade}
+                onChange={(option) => setMaxGrade(option)}
+                filterOption={customFilter}
+                placeholder="Select or type a grade..."
+              />
+            </div>
           </div>
 
           <div className="form-group">
             <label>Change To (Optional):</label>
-            <input
-              type="number"
+            <Select
+              options={gradeOptions}
               value={changeTo}
-              min="0"
-              max="100"
-              onChange={(e) => setChangeTo(e.target.value)}
+              onChange={(option) => setChangeTo(option)}
+              filterOption={customFilter}
+              isClearable
+              placeholder="Select or type a grade..."
             />
           </div>
 
           <div className="form-group">
             <label>Comment Code 1 (Optional):</label>
-            <input
-              type="text"
-              value={comment1}
-              onChange={(e) => setComment1(e.target.value)}
+            <Select
+              options={commentOptions}
+              value={commentOptions.find((option) => option.value === comment1)}
+              onChange={(option) => setComment1(option?.value || "")}
+              isClearable
+              filterOption={customFilter}
+              placeholder="Type or select a comment..."
             />
           </div>
 
           <div className="form-group">
             <label>Comment Code 2 (Optional):</label>
-            <input
-              type="text"
-              value={comment2}
-              onChange={(e) => setComment2(e.target.value)}
+            <Select
+              options={commentOptions}
+              value={commentOptions.find((option) => option.value === comment2)}
+              onChange={(option) => setComment2(option?.value || "")}
+              isClearable
+              filterOption={customFilter}
+              placeholder="Type or select a comment..."
             />
           </div>
 
           <div className="form-group">
             <label>Comment Code 3 (Optional):</label>
-            <input
-              type="text"
-              value={comment3}
-              onChange={(e) => setComment3(e.target.value)}
+            <Select
+              options={commentOptions}
+              value={commentOptions.find((option) => option.value === comment3)}
+              onChange={(option) => setComment3(option?.value || "")}
+              isClearable
+              filterOption={customFilter}
+              placeholder="Type or select a comment..."
             />
           </div>
 
           <button type="submit" className="btn">
             Add Rule
           </button>
-          <button type="button" className="btn btn-small" onClick={onClose}>
+          <button type="button" className="btn btn-small" onClick={closeAndResetForm}>
             Cancel
           </button>
         </form>
