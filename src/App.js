@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.css"
 function App() {
   const [file, setFile] = useState(null);
   const [rules, setRules] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ function App() {
 
   // Open or close the modal
   const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+    setIsCreateModalOpen(!isCreateModalOpen);
   };
 
 // Add a new rule
@@ -121,7 +121,7 @@ const handleAddRule = (newRule) => {
       )}
 
       <GradeRuleModal
-        isOpen={isModalOpen}
+        isOpen={isCreateModalOpen}
         onClose={toggleModal}
         onAddRule={handleAddRule}
         rules={rules} 
