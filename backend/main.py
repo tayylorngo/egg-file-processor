@@ -3,6 +3,7 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from openpyxl import load_workbook
 from io import BytesIO
+import json
 
 app = FastAPI()
 
@@ -16,34 +17,25 @@ app.add_middleware(
 )
 
 @app.post("/upload/")
-async def process_file(file: UploadFile = File(...), threshold: int = Form(...)):
+async def process_file(file: UploadFile = File(...), rules: str = Form(...)):
     workbook = load_workbook(file.file)
-    sheet = workbook.active
+    sheet = workbook["Student Marks"]
 
-    # Process grades in Column K (11th column)
-    for row in range(2, sheet.max_row + 1):  # Skip header row
-        grade_cell = sheet.cell(row=row, column=11)  # Column K is the 11th column
-        grade_value = grade_cell.value
-        try:
-        # Attempt to convert the grade to an integer
-            if grade_value is not None:
-                grade = int(float(grade_value))  # Handles floats and converts them to int
-                if grade < threshold:  # Compare the grade with the threshold
-                    grade_cell.value = 55  # Adjust the grade to 55
-            else:
-                grade_cell.value = "NS"
-        except (ValueError, TypeError):
-            # Skip invalid or non-numeric values
-            print(f"Skipping invalid grade value at row {row}: {grade_value}")
+    # Parse rules
+    rules = json.loads(rules)  # Convert JSON string to a Python list
 
-    # Save the workbook to a BytesIO object
+    # Apply rules to grades
+    for row in range(2, sheet.max_row + 1):
+        grade_cell = sheet.cell(row=row, column=11)  # Column K
+        if grade_cell.value is not None and isinstance(grade_cell.value, (int, float)):
+            grade = float(grade_cell.value)
+            for rule in rules:
+                if float(rule["min"]) <= grade <= float(rule["max"]):
+                    grade_cell.value = float(rule["changeTo"])
+                    break
+
+    # Save the workbook
     output = BytesIO()
     workbook.save(output)
     output.seek(0)
-
-    # Return the file as a downloadable response
-    return StreamingResponse(
-        output,
-        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        headers={"Content-Disposition": "attachment; filename=processed_grades.xlsx"},
-    )
+    return StreamingResponse(output, media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", headers={"Content-Disposition": "attachment; filename=processed_grades.xlsx"})

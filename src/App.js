@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import "./App.css"; // Custom CSS for styling
+import GradeRuleModal from "./components/GradeRuleModal";
+import GradeRuleList from "./components/GradeRuleList";
+import "./App.css";
 
 function App() {
   const [file, setFile] = useState(null);
-  const [threshold, setThreshold] = useState(65); // Default threshold is 65
+  const [rules, setRules] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
 
@@ -12,36 +15,47 @@ function App() {
     setFile(event.target.files[0]);
   };
 
-  // Handle grade threshold input
-  const handleThresholdChange = (event) => {
-    setThreshold(event.target.value);
+  // Open or close the modal
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
   };
 
+  // Add a new rule
+  const handleAddRule = (newRule) => {
+    setRules([...rules, newRule]);
+  };
+
+  // Remove a rule
+  const handleRemoveRule = (index) => {
+    setRules(rules.filter((_, i) => i !== index));
+  };
+
+  // Handle file upload
   const handleFileUpload = async () => {
     if (!file) {
       setMessage("Please select a file first!");
       return;
     }
-  
-    if (!threshold || isNaN(threshold)) {
-      setMessage("Please enter a valid grade threshold.");
+
+    if (rules.length === 0) {
+      setMessage("Please add at least one grade rule.");
       return;
     }
-  
+
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("threshold", Number(threshold)); // Ensure threshold is sent as a number
-  
+    formData.append("rules", JSON.stringify(rules)); // Send rules as JSON
+
     try {
       const response = await fetch("http://127.0.0.1:8000/upload/", {
         method: "POST",
         body: formData,
       });
-  
+
       if (!response.ok) {
         throw new Error("Failed to process the file.");
       }
-  
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       setDownloadUrl(url);
@@ -51,29 +65,22 @@ function App() {
       setMessage("Error uploading file. Please try again.");
     }
   };
-  
+
   return (
     <div className="container">
       <h1>Excel File Processor</h1>
-      <p>Upload your Excel file and set a grade threshold.</p>
+      <p>Upload your Excel file and define grade rules.</p>
 
       <div className="form-group">
         <label htmlFor="formFile">Upload your Excel file:</label>
         <input type="file" id="formFile" onChange={handleFileChange} />
       </div>
 
-      <div className="form-group">
-        <label htmlFor="threshold">Enter grade threshold to change to 55:</label>
-        <input
-          type="number"
-          id="threshold"
-          value={threshold}
-          onChange={handleThresholdChange}
-          placeholder="Enter threshold (e.g., 60)"
-        />
-      </div>
+      <button onClick={toggleModal} className="btn">Add Custom Grade Rule</button>
 
-      <button onClick={handleFileUpload}>Upload and Process</button>
+      <GradeRuleList rules={rules} onRemoveRule={handleRemoveRule} />
+
+      <button onClick={handleFileUpload} className="btn">Upload and Process</button>
 
       <p className="message">{message}</p>
 
@@ -82,6 +89,12 @@ function App() {
           Download Processed File
         </a>
       )}
+
+      <GradeRuleModal
+        isOpen={isModalOpen}
+        onClose={toggleModal}
+        onAddRule={handleAddRule}
+      />
     </div>
   );
 }
