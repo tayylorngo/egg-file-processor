@@ -24,7 +24,7 @@ const GradeRuleList = ({ rules, onRemoveRule }) => {
             {rules.map((rule, index) => (
               <tr key={index}>
                 {
-                  rule.minGrade == rule.maxGrade ? 
+                  rule.minGrade === rule.maxGrade ? 
                   <td className="text-center align-middle">
                       {rule.minGrade}
                   </td> 

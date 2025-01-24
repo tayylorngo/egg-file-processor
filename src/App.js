@@ -52,9 +52,13 @@ const handleAddRule = (newRule) => {
     formData.append("rules", JSON.stringify(rules)); // Send rules as JSON
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/upload/", {
+      const BASE_URL = "https://swift-grades.onrender.com";
+      const endpoint = "/upload/";
+      const uploadUrl = `${BASE_URL}${endpoint}`;
+  
+      const response = await fetch(uploadUrl, {
         method: "POST",
-        body: formData,
+        body: formData, // Ensure `formData` is properly constructed
       });
 
       if (!response.ok) {
