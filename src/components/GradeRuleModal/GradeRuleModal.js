@@ -7,7 +7,7 @@ const generateGradeOptions = () => {
   return Array.from({ length: 101 }, (_, i) => ({ value: i, label: i.toString() }));
 };
 
-const GradeRuleModal = ({ isOpen, onClose, onAddRule }) => {
+const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
   const [minGrade, setMinGrade] = useState({ value: 0, label: "0" });
   const [maxGrade, setMaxGrade] = useState({ value: 100, label: "100" });
   const [changeTo, setChangeTo] = useState(null);
@@ -47,18 +47,41 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule }) => {
     setComment3("");
   };
 
+  const doesOverlap = (newRule, rules) => {
+    console.log(rules)
+    return rules.some((rule) => {
+      return (
+        (newRule.minGrade >= rule.minGrade && newRule.minGrade <= rule.maxGrade) || // New min is within an existing range
+        (newRule.maxGrade >= rule.minGrade && newRule.maxGrade <= rule.maxGrade) || // New max is within an existing range
+        (rule.minGrade >= newRule.minGrade && rule.minGrade <= newRule.maxGrade) || // Existing min is within the new range
+        (rule.maxGrade >= newRule.minGrade && rule.maxGrade <= newRule.maxGrade)    // Existing max is within the new range
+      );
+    });
+  };  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    resetForm();
+
+    // Constructing the rule to be added
     const newRule = {
-      minGrade: minGrade.value,
-      maxGrade: maxGrade.value,
-      changeTo: changeTo ? changeTo.value : "N/A",
-      comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
+        minGrade: minGrade?.value || 0,
+        maxGrade: maxGrade?.value || 100,
+        changeTo: changeTo?.value || "N/A",
+        comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
     };
+
+    // Checking for overlapping ranges in existing rules
+    const existingRules = Array.isArray(rules) ? rules : [];
+    if (doesOverlap(newRule, existingRules)) {
+        alert("Grade range overlaps with an existing rule. Please adjust the range.");
+        return;
+    }
+
+    // Adding the rule and resetting the form
     onAddRule(newRule);
-    onClose(); // Close the modal after submitting
-  };
+    resetForm();
+    onClose();
+};
 
   const customFilter = (option, inputValue) => {
     return (

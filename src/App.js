@@ -78,7 +78,15 @@ function App() {
 
       <button onClick={toggleModal} className="btn">Add Custom Grade Rule</button>
 
-      <GradeRuleList rules={rules} onRemoveRule={handleRemoveRule} />
+      <GradeRuleList
+          rules={rules.map(rule => ({
+            minGrade: rule.minGrade,
+            maxGrade: rule.maxGrade,
+            changeTo: rule.changeTo,
+            comments: rule.comments,
+          }))}
+          onRemoveRule={handleRemoveRule}
+/>
 
       <button onClick={handleFileUpload} className="btn">Upload and Process</button>
 
@@ -94,6 +102,7 @@ function App() {
         isOpen={isModalOpen}
         onClose={toggleModal}
         onAddRule={handleAddRule}
+        rules={rules} 
       />
     </div>
   );
