@@ -21,10 +21,14 @@ function App() {
     setIsModalOpen(!isModalOpen);
   };
 
-  // Add a new rule
-  const handleAddRule = (newRule) => {
-    setRules([...rules, newRule]);
-  };
+// Add a new rule
+const handleAddRule = (newRule) => {
+  setRules((prevRules) => {
+    // Add the new rule and sort by mingrade
+    const updatedRules = [...prevRules, newRule].sort((a, b) => a.minGrade - b.minGrade);
+    return updatedRules;
+  });
+};
 
   // Remove a rule
   const handleRemoveRule = (index) => {
