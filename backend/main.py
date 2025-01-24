@@ -51,7 +51,9 @@ async def process_file(file: UploadFile = File(...), rules: str = Form(...)):
     # Apply rules to grades
     for row in range(2, sheet.max_row + 1):
         grade_cell = sheet.cell(row=row, column=11)  # Column K
-        if grade_cell.value is not None and grade_cell.value.isnumeric():
+        if grade_cell.value is not None:
+            if isinstance(grade_cell.value, str) and not grade_cell.value.isnumeric():
+                continue
             grade = float(grade_cell.value)
             for rule in rules:
                 if float(rule["minGrade"]) <= grade <= float(rule["maxGrade"]):
