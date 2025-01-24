@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import GradeRuleModal from "./components/GradeRuleModal/GradeRuleModal";
 import GradeRuleList from "./components/GradeRuleList/GradeRuleList";
+import Spinner from './components/Spinner/Spinner';
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css"
 
@@ -10,6 +11,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // Handle file selection
   const handleFileChange = (event) => {
@@ -51,6 +53,9 @@ const handleAddRule = (newRule) => {
     formData.append("file", file);
     formData.append("rules", JSON.stringify(rules)); // Send rules as JSON
 
+    setMessage("");
+    setLoading(true); // Show spinner
+
     try {
       const BASE_URL = "https://swift-grades.onrender.com";
       const endpoint = "/upload/";
@@ -72,6 +77,9 @@ const handleAddRule = (newRule) => {
     } catch (error) {
       console.error("Error uploading file:", error);
       setMessage("Error uploading file. Please try again.");
+    }
+    finally {
+      setLoading(false); // Hide spinner
     }
   };
 
@@ -103,6 +111,8 @@ const handleAddRule = (newRule) => {
       </div>
 
       <p className="message mt-3">{message}</p>
+
+      {loading && <Spinner />} {/* Show Spinner when loading is true */}
 
       {downloadUrl && (
         <a href={downloadUrl} download="processed_grades.xlsx" className="download-link">
