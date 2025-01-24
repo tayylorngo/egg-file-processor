@@ -1,5 +1,5 @@
 import React from "react";
-import "./GradeRuleList.css"; // Import styles for the table
+import "./GradeRuleList.css";
 
 const GradeRuleList = ({ rules, onRemoveRule }) => {
   return (
