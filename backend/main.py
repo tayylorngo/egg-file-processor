@@ -11,7 +11,8 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000"
+        "http://localhost:3000",
+        "https://eggfileprocessor.netlify.app"
         ],  # React frontend URL
     allow_credentials=True,
     allow_methods=["*"],  # Allow all methods
