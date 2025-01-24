@@ -72,6 +72,11 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
         comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
     };
 
+    if (minGrade?.value > maxGrade?.value){
+      alert("Minimum grade cannot be greater than maximum grade. Please adjust the range.")
+      return;
+    }
+
     // Checking for overlapping ranges in existing rules
     const existingRules = Array.isArray(rules) ? rules : [];
     if (doesOverlap(newRule, existingRules)) {
