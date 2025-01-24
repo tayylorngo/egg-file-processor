@@ -23,9 +23,16 @@ const GradeRuleList = ({ rules, onRemoveRule }) => {
           <tbody>
             {rules.map((rule, index) => (
               <tr key={index}>
-                <td className="text-center align-middle">
-                  {rule.minGrade} - {rule.maxGrade}
-                </td>
+                {
+                  rule.minGrade == rule.maxGrade ? 
+                  <td className="text-center align-middle">
+                      {rule.minGrade}
+                  </td> 
+                  : 
+                  <td className="text-center align-middle">
+                      {rule.minGrade +  " - " + rule.maxGrade}
+                  </td>
+                }
                 <td className="text-center align-middle">{rule.changeTo}</td>
                 <td className="text-center align-middle">{rule.comments[0]}</td>
                 <td className="text-center align-middle">{rule.comments[1]}</td>

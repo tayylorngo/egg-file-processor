@@ -66,8 +66,8 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
 
     // Constructing the rule to be added
     const newRule = {
-        minGrade: minGrade?.value || 0,
-        maxGrade: maxGrade?.value || 100,
+        minGrade: minGrade?.value,
+        maxGrade: maxGrade?.value,
         changeTo: changeTo?.value || "N/A",
         comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
     };
