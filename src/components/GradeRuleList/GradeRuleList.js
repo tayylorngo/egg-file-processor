@@ -13,6 +13,9 @@ const GradeRuleList = ({ rules, onRemoveRule }) => {
             <tr>
               <th>Grade Range</th>
               <th>Adjusted Grade</th>
+              <th>Comment 1</th>
+              <th>Comment 2</th>
+              <th>Comment 3</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -20,9 +23,12 @@ const GradeRuleList = ({ rules, onRemoveRule }) => {
             {rules.map((rule, index) => (
               <tr key={index}>
                 <td>
-                  {rule.min} - {rule.max}
+                  {rule.minGrade} - {rule.maxGrade}
                 </td>
                 <td>{rule.changeTo}</td>
+                <td>{rule.comments[0]}</td>
+                <td>{rule.comments[1]}</td>
+                <td>{rule.comments[2]}</td>
                 <td>
                   <button
                     onClick={() => onRemoveRule(index)}
