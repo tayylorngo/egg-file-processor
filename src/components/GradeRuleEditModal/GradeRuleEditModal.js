@@ -135,17 +135,23 @@ const GradeRuleEditModal = ({
                 value={minGrade}
                 onChange={(option) => setMinGrade(option)}
                 onInputChange={(inputValue) => {
-                    if (!isNaN(inputValue) && inputValue.trim() !== "") {
-                    setMinGrade({ value: inputValue, label: inputValue });
+                    // Allow only valid numeric inputs within range
+                    const value = parseInt(inputValue, 10);
+                    if (!isNaN(value) && value >= 0 && value <= 100) {
+                    setMinGrade({ value: value.toString(), label: value.toString() });
                     }
                 }}
                 onBlur={() => {
-                    if (!minGrade?.value) {
-                    setMinGrade({ value: "0", label: "0" }); // Default fallback
+                    // Fallback to a valid value if out of range
+                    const value = parseInt(minGrade?.value, 10);
+                    if (isNaN(value) || value < 0) {
+                    setMinGrade({ value: "0", label: "0" });
+                    } else if (value > 100) {
+                    setMinGrade({ value: "100", label: "100" });
                     } else {
                     setMinGrade({
-                        value: minGrade.value.toString(),
-                        label: minGrade.value.toString(),
+                        value: value.toString(),
+                        label: value.toString(),
                     });
                     }
                 }}
@@ -162,17 +168,21 @@ const GradeRuleEditModal = ({
                 value={maxGrade}
                 onChange={(option) => setMaxGrade(option)}
                 onInputChange={(inputValue) => {
-                    if (!isNaN(inputValue) && inputValue.trim() !== "") {
-                    setMaxGrade({ value: inputValue, label: inputValue });
+                    const value = parseInt(inputValue, 10);
+                    if (!isNaN(value) && value >= 0 && value <= 100) {
+                    setMaxGrade({ value: value.toString(), label: value.toString() });
                     }
                 }}
                 onBlur={() => {
-                    if (!maxGrade?.value) {
-                    setMaxGrade({ value: "100", label: "100" }); // Default fallback
+                    const value = parseInt(maxGrade?.value, 10);
+                    if (isNaN(value) || value < 0) {
+                    setMaxGrade({ value: "0", label: "0" });
+                    } else if (value > 100) {
+                    setMaxGrade({ value: "100", label: "100" });
                     } else {
                     setMaxGrade({
-                        value: maxGrade.value.toString(),
-                        label: maxGrade.value.toString(),
+                        value: value.toString(),
+                        label: value.toString(),
                     });
                     }
                 }}
@@ -190,17 +200,21 @@ const GradeRuleEditModal = ({
                 value={changeTo}
                 onChange={(option) => setChangeTo(option)}
                 onInputChange={(inputValue) => {
-                    if (inputValue.trim() !== "") {
-                    setChangeTo({ value: inputValue, label: inputValue });
+                    const value = parseInt(inputValue, 10);
+                    if (!isNaN(value) && value >= 0 && value <= 100) {
+                    setChangeTo({ value: value.toString(), label: value.toString() });
                     }
                 }}
                 onBlur={() => {
-                    if (!changeTo || !changeTo.value) {
-                    setChangeTo(null); // Default fallback
+                    const value = parseInt(changeTo?.value, 10);
+                    if (isNaN(value) || value < 0) {
+                    setChangeTo(null); // Reset to null if invalid
+                    } else if (value > 100) {
+                    setChangeTo({ value: "100", label: "100" });
                     } else {
                     setChangeTo({
-                        value: changeTo.value.toString(),
-                        label: changeTo.value.toString(),
+                        value: value.toString(),
+                        label: value.toString(),
                     });
                     }
                 }}
