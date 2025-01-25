@@ -5,6 +5,7 @@ import GradeRuleEditModal from "./components/GradeRuleEditModal/GradeRuleEditMod
 import Spinner from './components/Spinner/Spinner';
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css"
+import NavbarBottom from "./components/NavbarBottom/NavbarBottom";
 
 function App() {
   const [file, setFile] = useState(null);
@@ -110,6 +111,7 @@ function App() {
 
   return (
     <div className="container pb-1">
+      {/* <NavbarBottom/> */}
       <h1 className="fs-1">EGG File Processor</h1>
       <p className="mb-1 fs-5">Upload your EGG file (.xlsx) and define your grade criteria.</p>
 
