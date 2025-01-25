@@ -69,37 +69,38 @@ const GradeRuleEditModal = ({
   };
 
   const doesOverlap = (newRule, rules) => {
-    return rules.some((rule) => {
+    // Create a copy of the rules array without the edited rule
+    const rulesCopy = rules.filter((_, index) => index !== editedRuleIndex);
+  
+    // Check for overlaps in the copied array
+    return rulesCopy.some((rule) => {
       return (
-        (newRule.minGrade >= rule.minGrade &&
-          newRule.minGrade <= rule.maxGrade) || // New min is within an existing range
-        (newRule.maxGrade >= rule.minGrade &&
-          newRule.maxGrade <= rule.maxGrade) || // New max is within an existing range
-        (rule.minGrade >= newRule.minGrade &&
-          rule.minGrade <= newRule.maxGrade) || // Existing min is within the new range
-        (rule.maxGrade >= newRule.minGrade &&
-          rule.maxGrade <= newRule.maxGrade) // Existing max is within the new range
+        (newRule.minGrade >= rule.minGrade && newRule.minGrade <= rule.maxGrade) || // New min is within an existing range
+        (newRule.maxGrade >= rule.minGrade && newRule.maxGrade <= rule.maxGrade) || // New max is within an existing range
+        (rule.minGrade >= newRule.minGrade && rule.minGrade <= newRule.maxGrade) || // Existing min is within the new range
+        (rule.maxGrade >= newRule.minGrade && rule.maxGrade <= newRule.maxGrade)    // Existing max is within the new range
       );
     });
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const newRule = {
       minGrade: minGrade?.value,
       maxGrade: maxGrade?.value,
       changeTo: changeTo?.value || "N/A",
       comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
     };
-
+  
     if (minGrade?.value > maxGrade?.value) {
       alert(
         "Minimum grade cannot be greater than maximum grade. Please adjust the range."
       );
       return;
     }
-
+  
     const existingRules = Array.isArray(rules) ? rules : [];
     if (doesOverlap(newRule, existingRules)) {
       alert(
@@ -107,10 +108,10 @@ const GradeRuleEditModal = ({
       );
       return;
     }
-
-    onEditRule(newRule);
-    onClose();
+    onEditRule(newRule); // Pass the updated rules to the parent
+    onClose(-1);
   };
+  
 
   const customFilter = (option, inputValue) => {
     return (

@@ -48,13 +48,20 @@ const handleAddRule = (newRule) => {
 
   // Edit a rule
   const handleEditRule = (editedRule) => {
-    setRules((prevRules) => {
-        let newRules = prevRules[editingRule] = editedRule
-        newRules.sort((a, b) => a.minGrade - b.minGrade);
-        return newRules;
+    setRules((rules) => {
+      // Create a new array (immutable update)
+      const newRules = [...rules];
+      // Update the specific rule
+      newRules[editingRule] = editedRule;
+
+      // Sort the updated array by `minGrade`
+      newRules.sort((a, b) => a.minGrade - b.minGrade);
+
+      // Return the new array
+      return newRules;
     });
   };
-
+  
   // Handle file upload
   const handleFileUpload = async () => {
     if (!file) {
