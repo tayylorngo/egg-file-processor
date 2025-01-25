@@ -2,7 +2,7 @@ import React from "react";
 import "./GradeRuleList.css";
 import "bootstrap/dist/css/bootstrap.css"
 
-const GradeRuleList = ({ rules, onRemoveRule }) => {
+const GradeRuleList = ({ rules, onRemoveRule, openEditRuleModal }) => {
   return (
     <div className="">
       <h4 className="text-center">Grade Criteria</h4>
@@ -38,12 +38,20 @@ const GradeRuleList = ({ rules, onRemoveRule }) => {
                 <td className="text-center align-middle">{rule.comments[1]}</td>
                 <td className="text-center align-middle">{rule.comments[2]}</td>
                 <td className="text-center align-middle">
+                <div className="d-flex justify-content-center align-items-center gap-2">
+                <button
+                    onClick={() => openEditRuleModal(index)}
+                    className="btn btn-warning btn-sm"
+                  >
+                    Edit
+                  </button>
                   <button
                     onClick={() => onRemoveRule(index)}
                     className="btn btn-danger btn-sm"
                   >
                     Remove
                   </button>
+                </div>
                 </td>
               </tr>
             ))}

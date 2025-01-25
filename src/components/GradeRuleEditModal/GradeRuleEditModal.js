@@ -1,15 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Select from "react-select";
-import "./GradeRuleModal.css";
+// import "./GradeRuleModal.css";
 import commentsData from "../comments.json";
-import "bootstrap/dist/css/bootstrap.css"
+import "bootstrap/dist/css/bootstrap.css";
 
 const generateGradeOptions = () => {
-    let options =  Array.from({ length: 101 }, (_, i) => ({ value: i, label: i.toString() }));
-    return [options, [...options].reverse()];
+  let options = Array.from({ length: 101 }, (_, i) => ({
+    value: i,
+    label: i.toString(),
+  }));
+  return [options, [...options].reverse()];
 };
 
-const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
+const GradeRuleEditModal = ({
+  isOpen,
+  onClose,
+  onEditRule,
+  rules,
+  editedRuleIndex,
+}) => {
   const [minGrade, setMinGrade] = useState({ value: 0, label: "0" });
   const [maxGrade, setMaxGrade] = useState({ value: 100, label: "100" });
   const [changeTo, setChangeTo] = useState(null);
@@ -20,8 +29,26 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
   const [commentOptions, setCommentOptions] = useState([]);
   const gradeOptions = generateGradeOptions();
 
+  // Reset form logic wrapped in useCallback for a stable reference
+  const resetForm = useCallback(() => {
+    const rule = rules[editedRuleIndex] || {};
+    const minGrade = rule.minGrade || 0;
+    const maxGrade = rule.maxGrade || 100;
+    const changeTo = (rule.changeTo === "N/A" || null) ? null : rule.changeTo;
+    const c1 = rule.comments?.[0] || "";
+    const c2 = rule.comments?.[1] || "";
+    const c3 = rule.comments?.[2] || "";
+
+    setMinGrade({ value: minGrade, label: minGrade.toString() });
+    setMaxGrade({ value: maxGrade, label: maxGrade.toString() });
+    setChangeTo(changeTo ? { value: changeTo, label: changeTo } : null);
+    setComment1(c1);
+    setComment2(c2);
+    setComment3(c3);
+  }, [editedRuleIndex, rules]);
+
+  // Load comment options from JSON
   useEffect(() => {
-    // Load comment options from JSON
     const options = Object.entries(commentsData).map(([code, description]) => ({
       value: code,
       label: `${code} - ${description}`,
@@ -29,66 +56,61 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
     setCommentOptions(options);
   }, []);
 
+  // Reset the form when the modal opens
   useEffect(() => {
     if (isOpen) {
-      resetForm(); // Reset the form every time the modal is opened
+      resetForm();
     }
-  }, [isOpen]);
+  }, [isOpen, resetForm]);
 
   const closeAndResetForm = () => {
     resetForm();
     onClose();
-  }
-
-  const resetForm = () => {
-    setMinGrade({ value: 0, label: "0" });
-    setMaxGrade({ value: 100, label: "100" });
-    setChangeTo(null);
-    setComment1("");
-    setComment2("");
-    setComment3("");
   };
 
   const doesOverlap = (newRule, rules) => {
-    console.log(rules)
     return rules.some((rule) => {
       return (
-        (newRule.minGrade >= rule.minGrade && newRule.minGrade <= rule.maxGrade) || // New min is within an existing range
-        (newRule.maxGrade >= rule.minGrade && newRule.maxGrade <= rule.maxGrade) || // New max is within an existing range
-        (rule.minGrade >= newRule.minGrade && rule.minGrade <= newRule.maxGrade) || // Existing min is within the new range
-        (rule.maxGrade >= newRule.minGrade && rule.maxGrade <= newRule.maxGrade)    // Existing max is within the new range
+        (newRule.minGrade >= rule.minGrade &&
+          newRule.minGrade <= rule.maxGrade) || // New min is within an existing range
+        (newRule.maxGrade >= rule.minGrade &&
+          newRule.maxGrade <= rule.maxGrade) || // New max is within an existing range
+        (rule.minGrade >= newRule.minGrade &&
+          rule.minGrade <= newRule.maxGrade) || // Existing min is within the new range
+        (rule.maxGrade >= newRule.minGrade &&
+          rule.maxGrade <= newRule.maxGrade) // Existing max is within the new range
       );
     });
-  };  
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Constructing the rule to be added
     const newRule = {
-        minGrade: minGrade?.value,
-        maxGrade: maxGrade?.value,
-        changeTo: changeTo?.value || "N/A",
-        comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
+      minGrade: minGrade?.value,
+      maxGrade: maxGrade?.value,
+      changeTo: changeTo?.value || "N/A",
+      comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
     };
 
-    if (minGrade?.value > maxGrade?.value){
-      alert("Minimum grade cannot be greater than maximum grade. Please adjust the range.")
+    if (minGrade?.value > maxGrade?.value) {
+      alert(
+        "Minimum grade cannot be greater than maximum grade. Please adjust the range."
+      );
       return;
     }
 
-    // Checking for overlapping ranges in existing rules
     const existingRules = Array.isArray(rules) ? rules : [];
     if (doesOverlap(newRule, existingRules)) {
-        alert("Grade range overlaps with an existing rule. Please adjust the range.");
-        return;
+      alert(
+        "Grade range overlaps with an existing rule. Please adjust the range."
+      );
+      return;
     }
 
-    // Adding the rule and resetting the form
-    onAddRule(newRule);
-    resetForm();
+    onEditRule(newRule);
     onClose();
-};
+  };
 
   const customFilter = (option, inputValue) => {
     return (
@@ -102,7 +124,7 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
   return (
     <div className="modal-overlay centered-modal">
       <div className="modal-content">
-        <h2 className="modal-title">Add Grade Criteria</h2>
+        <h2 className="modal-title">Edit Grade Criteria</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-row">
             <div className="form-group half-width">
@@ -182,10 +204,16 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
             />
           </div>
           <div className="text-center row form-group">
-            <button type="submit" className="btn btn-success mb-1">
-              Add
+            <button type="submit" className="btn btn-warning mb-1">
+              Edit
             </button>
-            <button type="button" className="btn btn-danger" onClick={closeAndResetForm}>Cancel</button>
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={closeAndResetForm}
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>
@@ -193,4 +221,4 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
   );
 };
 
-export default GradeRuleModal;
+export default GradeRuleEditModal;

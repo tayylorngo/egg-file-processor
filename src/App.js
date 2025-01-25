@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import GradeRuleModal from "./components/GradeRuleModal/GradeRuleModal";
 import GradeRuleList from "./components/GradeRuleList/GradeRuleList";
+import GradeRuleEditModal from "./components/GradeRuleEditModal/GradeRuleEditModal";
 import Spinner from './components/Spinner/Spinner';
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css"
@@ -9,6 +10,9 @@ function App() {
   const [file, setFile] = useState(null);
   const [rules, setRules] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingRule, setEditingRule] = useState(-1);
+
   const [message, setMessage] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
   const [loading, setLoading] = useState(false);
@@ -19,8 +23,13 @@ function App() {
   };
 
   // Open or close the modal
-  const toggleModal = () => {
+  const toggleCreateRuleModal = () => {
     setIsCreateModalOpen(!isCreateModalOpen);
+  };
+
+  const toggleEditRuleModal = (index) => {
+    setEditingRule(index);
+    setIsEditModalOpen(!isEditModalOpen);
   };
 
 // Add a new rule
@@ -35,6 +44,15 @@ const handleAddRule = (newRule) => {
   // Remove a rule
   const handleRemoveRule = (index) => {
     setRules(rules.filter((_, i) => i !== index));
+  };
+
+  // Edit a rule
+  const handleEditRule = (editedRule) => {
+    setRules((prevRules) => {
+        let newRules = prevRules[editingRule] = editedRule
+        newRules.sort((a, b) => a.minGrade - b.minGrade);
+        return newRules;
+    });
   };
 
   // Handle file upload
@@ -102,8 +120,9 @@ const handleAddRule = (newRule) => {
             comments: rule.comments,
           }))}
           onRemoveRule={handleRemoveRule}
+          openEditRuleModal={toggleEditRuleModal}
       />
-      <button onClick={toggleModal} className="btn btn-primary w-50">Add Grade Criteria</button>
+      <button onClick={toggleCreateRuleModal} className="btn btn-primary w-50">Add Grade Criteria</button>
       </div>
 
       <div className="row">
@@ -122,9 +141,17 @@ const handleAddRule = (newRule) => {
 
       <GradeRuleModal
         isOpen={isCreateModalOpen}
-        onClose={toggleModal}
+        onClose={toggleCreateRuleModal}
         onAddRule={handleAddRule}
         rules={rules} 
+      />
+
+      <GradeRuleEditModal
+        isOpen={isEditModalOpen}
+        onClose={toggleEditRuleModal}
+        onEditRule={handleEditRule}
+        rules={rules}
+        editedRuleIndex={editingRule}
       />
     </div>
   );
