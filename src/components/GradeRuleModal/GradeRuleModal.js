@@ -112,24 +112,23 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
                   value={minGrade}
                   onChange={(option) => setMinGrade(option)} // Updates when an option is selected
                   onInputChange={(inputValue) => {
-                    // Allow only valid numeric inputs within range
-                    const value = parseInt(inputValue, 10);
-                    if (!isNaN(value) && value >= 0 && value <= 100) {
-                      setMinGrade({ value: value.toString(), label: value.toString() });
+                    // Allow the user to type freely without truncation
+                    if (!isNaN(inputValue) && inputValue.trim() !== "") {
+                      setMinGrade({ value: inputValue, label: inputValue });
                     }
                   }}
                   onBlur={() => {
-                    // Fallback to a valid value if out of range
+                    // Validate the value when the user clicks away
                     const value = parseInt(minGrade?.value, 10);
                     if (isNaN(value) || value < 0) {
-                      setMinGrade({ value: "0", label: "0" });
+                      setMinGrade({ value: "0", label: "0" }); // Default fallback
                     } else if (value > 100) {
-                      setMinGrade({ value: "100", label: "100" });
+                      setMinGrade({ value: "0", label: "0" }); // Cap to 0
                     } else {
                       setMinGrade({
                         value: value.toString(),
                         label: value.toString(),
-                      });
+                      }); // Ensure valid formatting
                     }
                   }}
                   filterOption={customFilter}
@@ -145,9 +144,8 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
                   value={maxGrade}
                   onChange={(option) => setMaxGrade(option)}
                   onInputChange={(inputValue) => {
-                    const value = parseInt(inputValue, 10);
-                    if (!isNaN(value) && value >= 0 && value <= 100) {
-                      setMaxGrade({ value: value.toString(), label: value.toString() });
+                    if (!isNaN(inputValue) && inputValue.trim() !== "") {
+                      setMaxGrade({ value: inputValue, label: inputValue });
                     }
                   }}
                   onBlur={() => {
@@ -155,7 +153,7 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
                     if (isNaN(value) || value < 0) {
                       setMaxGrade({ value: "0", label: "0" });
                     } else if (value > 100) {
-                      setMaxGrade({ value: "100", label: "100" });
+                      setMaxGrade({ value: "0", label: "0" });
                     } else {
                       setMaxGrade({
                         value: value.toString(),
@@ -173,33 +171,32 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
           <div className="form-group">
             <label>Change To:</label>
             <Select
-                options={gradeOptions[0]}
-                value={changeTo}
-                onChange={(option) => setChangeTo(option)}
-                onInputChange={(inputValue) => {
-                  const value = parseInt(inputValue, 10);
-                  if (!isNaN(value) && value >= 0 && value <= 100) {
-                    setChangeTo({ value: value.toString(), label: value.toString() });
-                  }
-                }}
-                onBlur={() => {
-                  const value = parseInt(changeTo?.value, 10);
-                  if (isNaN(value) || value < 0) {
-                    setChangeTo(null); // Reset to null if invalid
-                  } else if (value > 100) {
-                    setChangeTo({ value: "100", label: "100" });
-                  } else {
-                    setChangeTo({
-                      value: value.toString(),
-                      label: value.toString(),
-                    });
-                  }
-                }}
-                filterOption={customFilter}
-                placeholder="Select or type a grade..."
-                className="select-form"
-                isClearable
-              />
+              options={gradeOptions[0]}
+              value={changeTo}
+              onChange={(option) => setChangeTo(option)}
+              onInputChange={(inputValue) => {
+                if (!isNaN(inputValue) && inputValue.trim() !== "") {
+                  setChangeTo({ value: inputValue, label: inputValue });
+                }
+              }}
+              onBlur={() => {
+                const value = parseInt(changeTo?.value, 10);
+                if (isNaN(value) || value < 0) {
+                  setChangeTo(null); // Reset to null if invalid
+                } else if (value > 100) {
+                  setChangeTo(null);
+                } else {
+                  setChangeTo({
+                    value: value.toString(),
+                    label: value.toString(),
+                  });
+                }
+              }}
+              filterOption={customFilter}
+              placeholder="Select or type a grade..."
+              className="select-form"
+              isClearable
+            />
           </div>
 
           <div className="form-group">
