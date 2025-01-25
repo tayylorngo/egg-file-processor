@@ -81,8 +81,6 @@ function App() {
     setMessage("");
     setLoading(true); // Show spinner
 
-    console.log(file.name)
-
     try {
       const BASE_URL = "https://swift-grades.onrender.com";
       const endpoint = "/upload/";
