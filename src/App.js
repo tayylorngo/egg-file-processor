@@ -5,7 +5,7 @@ import GradeRuleEditModal from "./components/GradeRuleEditModal/GradeRuleEditMod
 import Spinner from './components/Spinner/Spinner';
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css"
-import NavbarBottom from "./components/NavbarBottom/NavbarBottom";
+// import NavbarBottom from "./components/NavbarBottom/NavbarBottom";
 
 function App() {
   const [file, setFile] = useState(null);

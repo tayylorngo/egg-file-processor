@@ -134,10 +134,25 @@ const GradeRuleEditModal = ({
                 options={gradeOptions[0]}
                 value={minGrade}
                 onChange={(option) => setMinGrade(option)}
+                onInputChange={(inputValue) => {
+                    if (!isNaN(inputValue) && inputValue.trim() !== "") {
+                    setMinGrade({ value: inputValue, label: inputValue });
+                    }
+                }}
+                onBlur={() => {
+                    if (!minGrade?.value) {
+                    setMinGrade({ value: "0", label: "0" }); // Default fallback
+                    } else {
+                    setMinGrade({
+                        value: minGrade.value.toString(),
+                        label: minGrade.value.toString(),
+                    });
+                    }
+                }}
                 filterOption={customFilter}
                 placeholder="Select or type a grade..."
                 className="select-form"
-              />
+                />
             </div>
 
             <div className="form-group half-width">
@@ -146,24 +161,54 @@ const GradeRuleEditModal = ({
                 options={gradeOptions[1]}
                 value={maxGrade}
                 onChange={(option) => setMaxGrade(option)}
+                onInputChange={(inputValue) => {
+                    if (!isNaN(inputValue) && inputValue.trim() !== "") {
+                    setMaxGrade({ value: inputValue, label: inputValue });
+                    }
+                }}
+                onBlur={() => {
+                    if (!maxGrade?.value) {
+                    setMaxGrade({ value: "100", label: "100" }); // Default fallback
+                    } else {
+                    setMaxGrade({
+                        value: maxGrade.value.toString(),
+                        label: maxGrade.value.toString(),
+                    });
+                    }
+                }}
                 filterOption={customFilter}
                 placeholder="Select or type a grade..."
                 className="select-form"
-              />
+                />
             </div>
           </div>
 
           <div className="form-group">
             <label>Change To:</label>
             <Select
-              options={gradeOptions[0]}
-              value={changeTo}
-              onChange={(option) => setChangeTo(option)}
-              filterOption={customFilter}
-              isClearable
-              placeholder="Select or type a grade..."
-              className="select-form"
-            />
+                options={gradeOptions[0]}
+                value={changeTo}
+                onChange={(option) => setChangeTo(option)}
+                onInputChange={(inputValue) => {
+                    if (inputValue.trim() !== "") {
+                    setChangeTo({ value: inputValue, label: inputValue });
+                    }
+                }}
+                onBlur={() => {
+                    if (!changeTo || !changeTo.value) {
+                    setChangeTo(null); // Default fallback
+                    } else {
+                    setChangeTo({
+                        value: changeTo.value.toString(),
+                        label: changeTo.value.toString(),
+                    });
+                    }
+                }}
+                filterOption={customFilter}
+                placeholder="Select or type a grade..."
+                className="select-form"
+                isClearable
+                />
           </div>
 
           <div className="form-group">
