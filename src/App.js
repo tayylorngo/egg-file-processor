@@ -32,14 +32,14 @@ function App() {
     setIsEditModalOpen(!isEditModalOpen);
   };
 
-// Add a new rule
-const handleAddRule = (newRule) => {
-  setRules((prevRules) => {
-    // Add the new rule and sort by mingrade
-    const updatedRules = [...prevRules, newRule].sort((a, b) => a.minGrade - b.minGrade);
-    return updatedRules;
-  });
-};
+  // Add a new rule
+  const handleAddRule = (newRule) => {
+    setRules((prevRules) => {
+      // Add the new rule and sort by mingrade
+      const updatedRules = [...prevRules, newRule].sort((a, b) => a.minGrade - b.minGrade);
+      return updatedRules;
+    });
+  };
 
   // Remove a rule
   const handleRemoveRule = (index) => {
@@ -80,6 +80,8 @@ const handleAddRule = (newRule) => {
 
     setMessage("");
     setLoading(true); // Show spinner
+
+    console.log(file.name)
 
     try {
       const BASE_URL = "https://swift-grades.onrender.com";
@@ -141,7 +143,7 @@ const handleAddRule = (newRule) => {
       {loading && <Spinner />} {/* Show Spinner when loading is true */}
 
       {downloadUrl && (
-        <a href={downloadUrl} download="processed_grades.xlsx" className="download-link">
+        <a href={downloadUrl} download={file.name.slice(0, -5) + "_updated.xlsx"} className="download-link">
           Download Processed File
         </a>
       )}
