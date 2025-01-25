@@ -108,24 +108,59 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
             <div className="form-group half-width">
               <label>Min Grade:</label>
               <Select
-                options={gradeOptions[0]}
-                value={minGrade}
-                onChange={(option) => setMinGrade(option)}
-                filterOption={customFilter}
-                placeholder="Select or type a grade..."
-                className="select-form"
+                  options={gradeOptions[0]}
+                  value={minGrade}
+                  onChange={(option) => setMinGrade(option)} // Updates when an option is selected
+                  onInputChange={(inputValue) => {
+                    // Temporarily store user-typed input
+                    if (!isNaN(inputValue) && inputValue.trim() !== "") {
+                      setMinGrade({ value: inputValue, label: inputValue });
+                    }
+                  }}
+                  onBlur={() => {
+                    // Ensure the value persists on blur
+                    if (!minGrade.value) {
+                      setMinGrade({ value: "0", label: "0" }); // Fallback to default
+                    } else {
+                      setMinGrade({
+                        value: minGrade.value.toString(),
+                        label: minGrade.value.toString(),
+                      }); // Ensure consistent formatting
+                    }
+                  }}
+                  filterOption={customFilter}
+                  placeholder="Select or type a grade..."
+                  className="select-form"
+                  isClearable
               />
             </div>
 
             <div className="form-group half-width">
               <label>Max Grade:</label>
               <Select
-                options={gradeOptions[1]}
-                value={maxGrade}
-                onChange={(option) => setMaxGrade(option)}
-                filterOption={customFilter}
-                placeholder="Select or type a grade..."
-                className="select-form"
+                  options={gradeOptions[1]}
+                  value={maxGrade}
+                  onChange={(option) => setMaxGrade(option)} // Updates when an option is selected
+                  onInputChange={(inputValue) => {
+                    if (!isNaN(inputValue) && inputValue.trim() !== "") {
+                      setMaxGrade({ value: inputValue, label: inputValue });
+                    }
+                  }}
+                  onBlur={() => {
+                    // Ensure the value persists on blur
+                    if (!maxGrade.value) {
+                      setMaxGrade({ value: "100", label: "100" }); // Fallback to default
+                    } else {
+                      setMaxGrade({
+                        value: maxGrade.value.toString(),
+                        label: maxGrade.value.toString(),
+                      });
+                    }
+                  }}
+                  filterOption={customFilter}
+                  placeholder="Select or type a grade..."
+                  className="select-form"
+                  isClearable
               />
             </div>
           </div>
@@ -133,13 +168,29 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
           <div className="form-group">
             <label>Change To:</label>
             <Select
-              options={gradeOptions[0]}
+              options={gradeOptions[0]} // Assuming grade options for the "Change To" field
               value={changeTo}
-              onChange={(option) => setChangeTo(option)}
-              filterOption={customFilter}
-              isClearable
+              onChange={(option) => setChangeTo(option)} // Update when an option is selected
+              onInputChange={(inputValue) => {
+                // Allow custom user input
+                if (inputValue.trim() !== "") {
+                  setChangeTo({ value: inputValue, label: inputValue });
+                }
+              }}
+              onBlur={() => {
+                // Retain the typed value or default to null if cleared
+                if (!changeTo || !changeTo.value) {
+                  setChangeTo(null); // Default fallback
+                } else {
+                  setChangeTo({
+                    value: changeTo.value.toString(),
+                    label: changeTo.value.toString(),
+                  });
+                }
+              }}
               placeholder="Select or type a grade..."
               className="select-form"
+              isClearable
             />
           </div>
 
