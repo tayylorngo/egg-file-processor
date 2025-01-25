@@ -112,27 +112,30 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
                   value={minGrade}
                   onChange={(option) => setMinGrade(option)} // Updates when an option is selected
                   onInputChange={(inputValue) => {
-                    // Temporarily store user-typed input
-                    if (!isNaN(inputValue) && inputValue.trim() !== "") {
-                      setMinGrade({ value: inputValue, label: inputValue });
+                    // Allow only valid numeric inputs within range
+                    const value = parseInt(inputValue, 10);
+                    if (!isNaN(value) && value >= 0 && value <= 100) {
+                      setMinGrade({ value: value.toString(), label: value.toString() });
                     }
                   }}
                   onBlur={() => {
-                    // Ensure the value persists on blur
-                    if (!minGrade.value) {
-                      setMinGrade({ value: "0", label: "0" }); // Fallback to default
+                    // Fallback to a valid value if out of range
+                    const value = parseInt(minGrade?.value, 10);
+                    if (isNaN(value) || value < 0) {
+                      setMinGrade({ value: "0", label: "0" });
+                    } else if (value > 100) {
+                      setMinGrade({ value: "100", label: "100" });
                     } else {
                       setMinGrade({
-                        value: minGrade.value.toString(),
-                        label: minGrade.value.toString(),
-                      }); // Ensure consistent formatting
+                        value: value.toString(),
+                        label: value.toString(),
+                      });
                     }
                   }}
                   filterOption={customFilter}
                   placeholder="Select or type a grade..."
                   className="select-form"
-                  isClearable
-              />
+                />
             </div>
 
             <div className="form-group half-width">
@@ -140,58 +143,63 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
               <Select
                   options={gradeOptions[1]}
                   value={maxGrade}
-                  onChange={(option) => setMaxGrade(option)} // Updates when an option is selected
+                  onChange={(option) => setMaxGrade(option)}
                   onInputChange={(inputValue) => {
-                    if (!isNaN(inputValue) && inputValue.trim() !== "") {
-                      setMaxGrade({ value: inputValue, label: inputValue });
+                    const value = parseInt(inputValue, 10);
+                    if (!isNaN(value) && value >= 0 && value <= 100) {
+                      setMaxGrade({ value: value.toString(), label: value.toString() });
                     }
                   }}
                   onBlur={() => {
-                    // Ensure the value persists on blur
-                    if (!maxGrade.value) {
-                      setMaxGrade({ value: "100", label: "100" }); // Fallback to default
+                    const value = parseInt(maxGrade?.value, 10);
+                    if (isNaN(value) || value < 0) {
+                      setMaxGrade({ value: "0", label: "0" });
+                    } else if (value > 100) {
+                      setMaxGrade({ value: "100", label: "100" });
                     } else {
                       setMaxGrade({
-                        value: maxGrade.value.toString(),
-                        label: maxGrade.value.toString(),
+                        value: value.toString(),
+                        label: value.toString(),
                       });
                     }
                   }}
                   filterOption={customFilter}
                   placeholder="Select or type a grade..."
                   className="select-form"
-                  isClearable
-              />
+                />
             </div>
           </div>
 
           <div className="form-group">
             <label>Change To:</label>
             <Select
-              options={gradeOptions[0]} // Assuming grade options for the "Change To" field
-              value={changeTo}
-              onChange={(option) => setChangeTo(option)} // Update when an option is selected
-              onInputChange={(inputValue) => {
-                // Allow custom user input
-                if (inputValue.trim() !== "") {
-                  setChangeTo({ value: inputValue, label: inputValue });
-                }
-              }}
-              onBlur={() => {
-                // Retain the typed value or default to null if cleared
-                if (!changeTo || !changeTo.value) {
-                  setChangeTo(null); // Default fallback
-                } else {
-                  setChangeTo({
-                    value: changeTo.value.toString(),
-                    label: changeTo.value.toString(),
-                  });
-                }
-              }}
-              placeholder="Select or type a grade..."
-              className="select-form"
-              isClearable
-            />
+                options={gradeOptions[0]}
+                value={changeTo}
+                onChange={(option) => setChangeTo(option)}
+                onInputChange={(inputValue) => {
+                  const value = parseInt(inputValue, 10);
+                  if (!isNaN(value) && value >= 0 && value <= 100) {
+                    setChangeTo({ value: value.toString(), label: value.toString() });
+                  }
+                }}
+                onBlur={() => {
+                  const value = parseInt(changeTo?.value, 10);
+                  if (isNaN(value) || value < 0) {
+                    setChangeTo(null); // Reset to null if invalid
+                  } else if (value > 100) {
+                    setChangeTo({ value: "100", label: "100" });
+                  } else {
+                    setChangeTo({
+                      value: value.toString(),
+                      label: value.toString(),
+                    });
+                  }
+                }}
+                filterOption={customFilter}
+                placeholder="Select or type a grade..."
+                className="select-form"
+                isClearable
+              />
           </div>
 
           <div className="form-group">
