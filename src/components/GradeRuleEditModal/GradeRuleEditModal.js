@@ -135,19 +135,17 @@ const GradeRuleEditModal = ({
                 value={minGrade}
                 onChange={(option) => setMinGrade(option)}
                 onInputChange={(inputValue) => {
-                    // Allow only valid numeric inputs within range
                     const value = parseInt(inputValue, 10);
-                    if (!isNaN(value) && value >= 0 && value <= 100) {
-                    setMinGrade({ value: value.toString(), label: value.toString() });
+                    if (!isNaN(value) && value.toString().length <= 3) {
+                    setMinGrade({ value: inputValue, label: inputValue });
                     }
                 }}
                 onBlur={() => {
-                    // Fallback to a valid value if out of range
                     const value = parseInt(minGrade?.value, 10);
                     if (isNaN(value) || value < 0) {
                     setMinGrade({ value: "0", label: "0" });
                     } else if (value > 100) {
-                    setMinGrade({ value: "100", label: "100" });
+                    setMinGrade({ value: "0", label: "0" });
                     } else {
                     setMinGrade({
                         value: value.toString(),
@@ -169,8 +167,8 @@ const GradeRuleEditModal = ({
                 onChange={(option) => setMaxGrade(option)}
                 onInputChange={(inputValue) => {
                     const value = parseInt(inputValue, 10);
-                    if (!isNaN(value) && value >= 0 && value <= 100) {
-                    setMaxGrade({ value: value.toString(), label: value.toString() });
+                    if (!isNaN(value) && value.toString().length <= 3) {
+                    setMaxGrade({ value: inputValue, label: inputValue });
                     }
                 }}
                 onBlur={() => {
@@ -178,7 +176,7 @@ const GradeRuleEditModal = ({
                     if (isNaN(value) || value < 0) {
                     setMaxGrade({ value: "0", label: "0" });
                     } else if (value > 100) {
-                    setMaxGrade({ value: "100", label: "100" });
+                    setMaxGrade({ value: "0", label: "0" });
                     } else {
                     setMaxGrade({
                         value: value.toString(),
@@ -201,16 +199,16 @@ const GradeRuleEditModal = ({
                 onChange={(option) => setChangeTo(option)}
                 onInputChange={(inputValue) => {
                     const value = parseInt(inputValue, 10);
-                    if (!isNaN(value) && value >= 0 && value <= 100) {
-                    setChangeTo({ value: value.toString(), label: value.toString() });
+                    if (!isNaN(value) && value.toString().length <= 3) {
+                    setChangeTo({ value: inputValue, label: inputValue });
                     }
                 }}
                 onBlur={() => {
                     const value = parseInt(changeTo?.value, 10);
                     if (isNaN(value) || value < 0) {
-                    setChangeTo(null); // Reset to null if invalid
+                    setChangeTo(null);
                     } else if (value > 100) {
-                    setChangeTo({ value: "100", label: "100" });
+                    setChangeTo(null);
                     } else {
                     setChangeTo({
                         value: value.toString(),
