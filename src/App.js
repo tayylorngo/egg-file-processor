@@ -110,7 +110,7 @@ function App() {
   };
 
   return (
-    <div className="container pb-1">
+    <div className="container pb-1 mt-5 mb-5">
       {/* <NavbarBottom/> */}
       <h1 className="fs-1">EGG File Processor</h1>
       <p className="mb-1 fs-5">Upload your EGG file (.xlsx) and define your grade criteria.</p>

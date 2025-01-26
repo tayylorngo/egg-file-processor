@@ -51,6 +51,7 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
 
   const doesOverlap = (newRule, rules) => {
     console.log(rules)
+    console.log(newRule)
     return rules.some((rule) => {
       return (
         (newRule.minGrade >= rule.minGrade && newRule.minGrade <= rule.maxGrade) || // New min is within an existing range
@@ -66,13 +67,13 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
 
     // Constructing the rule to be added
     const newRule = {
-        minGrade: minGrade?.value,
-        maxGrade: maxGrade?.value,
-        changeTo: changeTo?.value || "N/A",
+        minGrade: Number(minGrade?.value),
+        maxGrade: Number(maxGrade?.value),
+        changeTo: Number(changeTo?.value) || "N/A",
         comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
     };
 
-    if (minGrade?.value > maxGrade?.value){
+    if (Number(minGrade?.value) > Number(maxGrade?.value)){
       alert("Minimum grade cannot be greater than maximum grade. Please adjust the range.")
       return;
     }
