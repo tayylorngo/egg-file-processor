@@ -88,13 +88,13 @@ const GradeRuleEditModal = ({
     e.preventDefault();
   
     const newRule = {
-      minGrade: minGrade?.value,
-      maxGrade: maxGrade?.value,
-      changeTo: changeTo?.value || "N/A",
+      minGrade: Number(minGrade?.value),
+      maxGrade: Number(maxGrade?.value),
+      changeTo: Number(changeTo?.value) || "N/A",
       comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
     };
   
-    if (minGrade?.value > maxGrade?.value) {
+    if (Number(minGrade?.value) > Number(maxGrade?.value)) {
       alert(
         "Minimum grade cannot be greater than maximum grade. Please adjust the range."
       );
