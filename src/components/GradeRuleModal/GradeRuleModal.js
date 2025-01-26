@@ -50,8 +50,8 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
   };
 
   const doesOverlap = (newRule, rules) => {
-    console.log(rules)
-    console.log(newRule)
+    // console.log(rules)
+    // console.log(newRule)
     return rules.some((rule) => {
       return (
         (newRule.minGrade >= rule.minGrade && newRule.minGrade <= rule.maxGrade) || // New min is within an existing range
