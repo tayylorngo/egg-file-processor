@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.css";
 
 const HowToUse = () => {
   return (
-    <div className="container mt-5 mb-5">
+    <div className="container mt-7 mb-5">
       <h2 className="mb-4 text-center">EGG File Processor: How To Use</h2>
       
       <Accordion defaultActiveKey="0" flush>
