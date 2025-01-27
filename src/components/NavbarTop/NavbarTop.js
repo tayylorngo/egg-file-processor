@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const NavbarTop = () => {
   return (
-<nav className="navbar navbar-expand-lg navbar-light bg-body-tertiary" 
+<nav className="navbar navbar-expand-lg navbar-light bg-body-tertiary fixed-top" 
         style={{
         backgroundColor: "#f8f9fa", // Light gray color
         borderBottom: "1px solid #e0e0e0", // Optional border for definition
