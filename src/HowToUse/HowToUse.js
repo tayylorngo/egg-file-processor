@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaUpload, FaCommentDots, FaDownload, FaSlidersH, FaRegEdit} from 'react-icons/fa';
+import { FaUpload, FaCommentDots, FaDownload, FaSlidersH, FaRegEdit, FaPlusCircle, FaArrowDown, FaFileAlt  } from 'react-icons/fa';
 import { Accordion, Card } from 'react-bootstrap';
 import "./HowToUse.css"
 
@@ -17,7 +17,7 @@ const HowToUse = () => {
           <Accordion.Body>
             <ol>
               <li>Click the "Choose File" button</li>
-              <li>Select your EGG file (XLSX format)</li>
+              <li>Select your EGG file (.xlsx format)</li>
             </ol>
           </Accordion.Body>
         </Accordion.Item>
@@ -25,7 +25,7 @@ const HowToUse = () => {
         {/* Step 2 */}
         <Accordion.Item eventKey="1">
           <Accordion.Header>
-            <FaSlidersH className="me-2" /> Step 2: Set Grade Criteria
+            <FaSlidersH className="me-2" /> Step 2: Define Grade Range
           </Accordion.Header>
           <Accordion.Body>
             <ol>
@@ -34,7 +34,7 @@ const HowToUse = () => {
             </ol>
             
             <div className="alert alert-warning mt-3">
-              <strong>Note:</strong> Ranges cannot overlap.
+              <strong>Note:</strong> Ranges cannot overlap with other criteria.
             </div>
           </Accordion.Body>
         </Accordion.Item>
@@ -45,12 +45,16 @@ const HowToUse = () => {
             <FaRegEdit className="me-2" /> Step 3: Change Grades (Optional)
           </Accordion.Header>
           <Accordion.Body>
-            <ol>
-              <li>Enter the grade you would like to change to for your selected range.</li>
-            </ol>
+            <ul>
+              <li>Enter the grade you'd like to assign to the selected range.</li>
+              <li>This step is optional — leaving it blank 
+                will keep the original grades unchanged.</li>
+            </ul>
             
             <div className="alert alert-warning mt-3">
-              <strong>Note:</strong> The grade you select will not be affected by other grading criteria.
+              <strong>Note:</strong> The grade you select won't be influenced 
+              by other criteria. For example, if you change grades from 0 – 64 to 55, 
+              another criteria for 55 – 65 won't affect that student. 
             </div>
           </Accordion.Body>
         </Accordion.Item>
@@ -62,16 +66,8 @@ const HowToUse = () => {
           </Accordion.Header>
           <Accordion.Body>
             <ul>
-              <li>Choose from preset comments in dropdown menus</li>
-              <li>Comments will appear in this order:
-                <ol>
-                  <li>Strengths</li>
-                  <li>Areas for Improvement</li>
-                  <li>General Comments</li>
-                </ol>
-              </li>
-              <li>Use the "+" button to add more comment slots</li>
-              <li>Use the "×" button to remove comments</li>
+              <li>Enter up to three comment codes. </li>
+              <li>You can search for a comment by typing its code or text.</li>
             </ul>
           </Accordion.Body>
         </Accordion.Item>
@@ -79,80 +75,179 @@ const HowToUse = () => {
         {/* Step 5 */}
         <Accordion.Item eventKey="4">
           <Accordion.Header>
-            <FaDownload className="me-2" /> Step 5: Process & Download
+            <FaPlusCircle className="me-2"/> Step 5: Add Additional Grade Criteria (Optional)
+          </Accordion.Header>
+          <Accordion.Body>
+            <ul>
+              <li>Repeat steps 2 - 4 to define more grade criteria if needed.</li>
+            </ul>
+          </Accordion.Body>
+        </Accordion.Item>
+
+        {/* Step 6 */}
+        <Accordion.Item eventKey="5">
+          <Accordion.Header>
+            <FaDownload className="me-2" /> Step 6: Process & Download
           </Accordion.Header>
           <Accordion.Body>
             <ol>
-              <li>Review all grade rules and comments</li>
-              <li>Click "Upload and Process"</li>
-              <li>Download link will appear when ready</li>
-              <li>Click "Download Processed File" to save</li>
+              <li>Review all grade rules and comments. 
+              To make changes, click the "Edit" button.</li>
+              <li>If everything looks good, click "Upload and Process."</li>
+              <li>The download link will appear once the file is ready, 
+                which may take up to a minute.</li>
+              <li>Once processing is complete, click "Download Processed File" to save it.</li>
             </ol>
 
             <div className="alert alert-info mt-3">
-              <strong>Note:</strong> Always verified processed grades before uploading to STARS.
+              <strong>Note:</strong> Always verify processed grades before uploading to STARS.
             </div>
           </Accordion.Body>
         </Accordion.Item>
-      </Accordion>
 
+        <Accordion.Item eventKey="6">
+      <Accordion.Header>
+            <FaFileAlt className="me-2" /> View Sample Grade Criteria & Egg File Changes
+    </Accordion.Header>
+    <Accordion.Body>
       {/* Visual Example Section */}
       <section className="mt-5">
-        <h4 className="mb-3">Example Workflow</h4>
+        {/* <h4 className="mb-3">Grade Processing Example</h4> */}
         <div className="row">
-          <div className="col-md-6">
-            <Card className="h-100">
-              <Card.Header>Original Grades</Card.Header>
+          <div className="col-12">
+            <Card className="mb-4">
               <Card.Body>
-                <table className="table table-sm">
+              <h5 className="mb-3">Sample Grade Criteria</h5>
+              <table className="table table-sm">
                   <thead>
                     <tr>
-                      <th>Student</th>
-                      <th>Grade</th>
+                      <th>Grade Range</th>
+                      <th>Adjusted Grade</th>
+                      <th>Comment 1</th>
+                      <th>Comment 2</th>
+                      <th>Comment 3</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr><td>Student A</td><td>58</td></tr>
-                    <tr><td>Student B</td><td>72</td></tr>
-                    <tr><td>Student C</td><td>63</td></tr>
+                    <tr>
+                      <td>0 - 64</td>
+                      <td>55</td>
+                      <td>527</td>
+                      <td>2060</td>
+                      <td>502</td>
+                    </tr>
+                    <tr>
+                      <td>65 - 69</td>
+                      <td></td>
+                      <td>521</td>
+                      <td>2060</td>
+                      <td>502</td>
+                    </tr>
+                    <tr>
+                      <td>70 - 79</td>
+                      <td></td>
+                      <td>513</td>
+                      <td>528</td>
+                      <td>502</td>
+                    </tr>
+                    <tr>
+                      <td>80 - 89</td>
+                      <td></td>
+                      <td>518</td>
+                      <td>522</td>
+                      <td>502</td>
+                    </tr>
+                    <tr>
+                      <td>90 - 100</td>
+                      <td></td>
+                      <td>519</td>
+                      <td>518</td>
+                      <td>502</td>
+                    </tr>
                   </tbody>
                 </table>
-              </Card.Body>
-            </Card>
-          </div>
-          <div className="col-md-6">
-            <Card className="h-100">
-              <Card.Header>After Processing (0-64 → 55)</Card.Header>
-              <Card.Body>
+                <h4 className='m-4'><FaArrowDown /></h4>
+                <h5 className="mb-3">Sample EGG File Changes</h5>
                 <table className="table table-sm">
                   <thead>
                     <tr>
-                      <th>Student</th>
-                      <th>Grade</th>
+                      <th>Original Mark</th>
+                      <th>Adjusted Grade</th>
+                      <th>Comment 1</th>
+                      <th>Comment 2</th>
+                      <th>Comment 3</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr><td>Student A</td><td>55</td></tr>
-                    <tr><td>Student B</td><td>72</td></tr>
-                    <tr><td>Student C</td><td>55</td></tr>
+                    <tr>
+                      <td>22</td>
+                      <td>55</td>
+                      <td>527</td>
+                      <td>2060</td>
+                      <td>502</td>
+                    </tr>
+                    <tr>
+                      <td>63</td>
+                      <td>55</td>
+                      <td>527</td>
+                      <td>2060</td>
+                      <td>502</td>
+                    </tr>
+                    <tr>
+                      <td>69</td>
+                      <td></td>
+                      <td>521</td>
+                      <td>2060</td>
+                      <td>502</td>
+                    </tr>
+                    <tr>
+                      <td>70</td>
+                      <td></td>
+                      <td>513</td>
+                      <td>528</td>
+                      <td>502</td>
+                    </tr>
+                    <tr>
+                      <td>74</td>
+                      <td></td>
+                      <td>513</td>
+                      <td>528</td>
+                      <td>502</td>
+                    </tr>
+                    <tr>
+                      <td>82</td>
+                      <td></td>
+                      <td>518</td>
+                      <td>522</td>
+                      <td>502</td>
+                    </tr>
+                    <tr>
+                      <td>94</td>
+                      <td></td>
+                      <td>519</td>
+                      <td>518</td>
+                      <td>502</td>
+                    </tr>
                   </tbody>
                 </table>
+                <div className="alert alert-warning mt-3">
+                  <strong>Note:</strong> Empty cells indicate no grade change from original mark.
+                </div>
               </Card.Body>
             </Card>
           </div>
         </div>
       </section>
-
-      {/* Notes Section */}
-      <div className="mt-4 p-3 bg-light rounded">
-        <h5>Important Notes:</h5>
-        <ul>
-          <li>Always verify processed files before distribution</li>
-          <li>Comments are saved in a new "Report Comments" column</li>
-          <li>Original grades are preserved in a "Original Grade" column</li>
-          <li>System automatically skips invalid rows</li>
+      <div className="mt-4 p-3 bg-light rounded important-notes">
+        <h5 className='mb-3'>Important Notes:</h5>
+        <ul className="text-left"> {/* Add text-left class here */}
+          <li>Grade ranges are inclusive, meaning a range of 55–65 will include grades exactly 55 and 65. </li>
+          <li>If no grade change or comment is specified, the cell will remain unchanged.</li>
         </ul>
       </div>
+      </Accordion.Body>
+      </Accordion.Item>
+      </Accordion>
     </div>
   );
 };
