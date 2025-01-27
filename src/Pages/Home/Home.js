@@ -3,7 +3,7 @@ import GradeRuleModal from "../../components/GradeRuleModal/GradeRuleModal";
 import GradeRuleList from "../../components/GradeRuleList/GradeRuleList";
 import GradeRuleEditModal from "../../components/GradeRuleEditModal/GradeRuleEditModal";
 import Spinner from '../../components/Spinner/Spinner';
-import "./App.css";
+import "../../App.css";
 import "bootstrap/dist/css/bootstrap.css"
 
 function Home() {
