@@ -5,8 +5,6 @@ import GradeRuleEditModal from "./components/GradeRuleEditModal/GradeRuleEditMod
 import Spinner from './components/Spinner/Spinner';
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css"
-import NavbarTop from "./components/NavbarTop/NavbarTop";
-import NavbarBottom from "./components/NavbarBottom/NavbarBottom";
 
 function Home() {
   const [file, setFile] = useState(null);

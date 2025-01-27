@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaUpload, FaCommentDots, FaDownload, FaTable, FaSlidersH, FaRegEdit} from 'react-icons/fa';
+import { FaUpload, FaCommentDots, FaDownload, FaSlidersH, FaRegEdit} from 'react-icons/fa';
 import { Accordion, Card } from 'react-bootstrap';
 import "./HowToUse.css"
 
