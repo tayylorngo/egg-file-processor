@@ -241,7 +241,7 @@ const HowToUse = () => {
       <div className="mt-4 p-3 bg-light rounded important-notes">
         <h5 className='mb-3'>Important Notes:</h5>
         <ul className="text-left"> {/* Add text-left class here */}
-          <li>Grade ranges are inclusive, meaning a range of 55–65 will include grades exactly 55 and 65. </li>
+          <li>Grade ranges are inclusive, meaning a range of 55–65 will include grades 55 and 65. </li>
           <li>If no grade change or comment is specified, the cell will remain unchanged.</li>
         </ul>
       </div>
