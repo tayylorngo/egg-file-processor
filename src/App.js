@@ -5,6 +5,7 @@ import GradeRuleEditModal from "./components/GradeRuleEditModal/GradeRuleEditMod
 import Spinner from './components/Spinner/Spinner';
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css"
+import NavbarTop from "./components/NavbarTop/NavbarTop";
 // import NavbarBottom from "./components/NavbarBottom/NavbarBottom";
 
 function App() {
@@ -109,14 +110,21 @@ function App() {
     }
   };
 
-  return (
-    <div className="container pb-1 mt-5 mb-5">
+  return (      
+    <>
+    <NavbarTop/>
+    <div className="container pb-1 mt-10 mb-5">
       {/* <NavbarBottom/> */}
       <h1 className="fs-1">EGG File Processor</h1>
       <p className="mb-1 fs-5">Upload your EGG file (.xlsx) and define your grade criteria.</p>
 
       <div className="form-group">
-        <input type="file" id="formFile" onChange={handleFileChange} />
+        <input 
+          type="file" 
+          id="formFile" 
+          onChange={handleFileChange} 
+          className="form-control" 
+        />
       </div>
 
 
@@ -131,18 +139,22 @@ function App() {
           onRemoveRule={handleRemoveRule}
           openEditRuleModal={toggleEditRuleModal}
       />
+      
       <button onClick={toggleCreateRuleModal} className="btn btn-primary w-50">Add Grade Criteria</button>
       </div>
 
-      <div className="row">
-        <button onClick={handleFileUpload} className="btn btn-success mt-3">Upload and Process</button>
-      </div>
+      <button 
+        onClick={handleFileUpload} 
+        className="btn btn-success mt-3 w-100"
+      >
+        Upload and Process
+      </button>
 
       <p className="message mt-3">{message}</p>
 
       {loading && <Spinner />} {/* Show Spinner when loading is true */}
 
-      {downloadUrl && (
+      {downloadUrl && file && (
         <a href={downloadUrl} download={file.name.slice(0, -5) + "_updated.xlsx"} className="download-link">
           Download Processed File
         </a>
@@ -163,6 +175,7 @@ function App() {
         editedRuleIndex={editingRule}
       />
     </div>
+    </>
   );
 }
 
