@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import GradeRuleModal from "../../components/GradeRuleModal/GradeRuleModal";
 import GradeRuleList from "../../components/GradeRuleList/GradeRuleList";
 import GradeRuleEditModal from "../../components/GradeRuleEditModal/GradeRuleEditModal";
+import GradeRuleDeleteModal from "../../components/GradeRuleDeleteModal/GradeRuleDeleteModal";
 import Spinner from '../../components/Spinner/Spinner';
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.css"
@@ -11,7 +12,9 @@ function Home() {
   const [rules, setRules] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editingRule, setEditingRule] = useState(-1);
+  const [deletingRule, setDeletingRule] = useState(-1);
 
   const [message, setMessage] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
@@ -32,6 +35,11 @@ function Home() {
     setIsEditModalOpen(!isEditModalOpen);
   };
 
+  const toggleDeleteRuleModal = (index) => {
+    setDeletingRule(index);
+    setIsDeleteModalOpen(!isDeleteModalOpen);
+  };
+
   // Add a new rule
   const handleAddRule = (newRule) => {
     setRules((prevRules) => {
@@ -40,7 +48,7 @@ function Home() {
       return updatedRules;
     });
   };
-
+  
   // Remove a rule
   const handleRemoveRule = (index) => {
     setRules(rules.filter((_, i) => i !== index));
@@ -132,7 +140,7 @@ function Home() {
             changeTo: rule.changeTo,
             comments: rule.comments,
           }))}
-          onRemoveRule={handleRemoveRule}
+          openDeleteRuleModal={toggleDeleteRuleModal}
           openEditRuleModal={toggleEditRuleModal}
       />
       
@@ -169,6 +177,13 @@ function Home() {
         onEditRule={handleEditRule}
         rules={rules}
         editedRuleIndex={editingRule}
+      />
+
+      <GradeRuleDeleteModal
+          isOpen={isDeleteModalOpen}
+          onClose={toggleDeleteRuleModal}
+          onDeleteRule={handleRemoveRule}
+          deletingRuleIndex={deletingRule}
       />
     </div>
     </>

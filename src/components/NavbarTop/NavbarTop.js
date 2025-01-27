@@ -13,7 +13,7 @@ const NavbarTop = () => {
   <div className="container-fluid">
     <button
       data-mdb-collapse-init
-      class="navbar-toggler"
+      className="navbar-toggler"
       type="button"
       data-mdb-target="#navbarCenteredExample"
       aria-controls="navbarCenteredExample"

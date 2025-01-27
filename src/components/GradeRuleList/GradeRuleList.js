@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Import Bootstrap JS
 import commentCodes from "../comments.json";
 
-const GradeRuleList = ({ rules, onRemoveRule, openEditRuleModal }) => {
+const GradeRuleList = ({ rules, openDeleteRuleModal, openEditRuleModal }) => {
 
   useEffect(() => {
     // Initialize tooltips for Bootstrap 5
@@ -83,7 +83,7 @@ const GradeRuleList = ({ rules, onRemoveRule, openEditRuleModal }) => {
                     Edit
                   </button>
                   <button
-                    onClick={() => onRemoveRule(index)}
+                    onClick={() => openDeleteRuleModal(index)}
                     className="btn btn-danger btn-sm"
                   >
                     Remove
