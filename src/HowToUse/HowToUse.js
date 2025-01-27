@@ -1,7 +1,8 @@
 import React from 'react';
 import { FaUpload, FaCommentDots, FaDownload, FaSlidersH, FaRegEdit, FaPlusCircle, FaArrowDown, FaFileAlt  } from 'react-icons/fa';
 import { Accordion, Card } from 'react-bootstrap';
-import "./HowToUse.css"
+import "./HowToUse.css";
+import "bootstrap/dist/css/bootstrap.css";
 
 const HowToUse = () => {
   return (
@@ -130,39 +131,39 @@ const HowToUse = () => {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>0 - 64</td>
-                      <td>55</td>
-                      <td>527</td>
-                      <td>2060</td>
-                      <td>502</td>
+                      <td className='bg-danger'>0 - 64</td>
+                      <td className='bg-danger'>55</td>
+                      <td className='bg-danger'>527</td>
+                      <td className='bg-danger'>2060</td>
+                      <td className='bg-danger'>502</td>
+                    </tr>   
+                    <tr>
+                      <td className='bg-orange'>65 - 69</td>
+                      <td className='bg-orange'></td>
+                      <td className='bg-orange'>521</td>
+                      <td className='bg-orange'>2060</td>
+                      <td className='bg-orange'>502</td>
                     </tr>
                     <tr>
-                      <td>65 - 69</td>
-                      <td></td>
-                      <td>521</td>
-                      <td>2060</td>
-                      <td>502</td>
+                      <td className='bg-yellow'>70 - 79</td>
+                      <td className='bg-yellow'></td>
+                      <td className='bg-yellow'>513</td>
+                      <td className='bg-yellow'>528</td>
+                      <td className='bg-yellow'>502</td>
                     </tr>
                     <tr>
-                      <td>70 - 79</td>
-                      <td></td>
-                      <td>513</td>
-                      <td>528</td>
-                      <td>502</td>
+                      <td className='bg-success'>80 - 89</td>
+                      <td className='bg-success'></td>
+                      <td className='bg-success'>518</td>
+                      <td className='bg-success'>522</td>
+                      <td className='bg-success'>502</td>
                     </tr>
                     <tr>
-                      <td>80 - 89</td>
-                      <td></td>
-                      <td>518</td>
-                      <td>522</td>
-                      <td>502</td>
-                    </tr>
-                    <tr>
-                      <td>90 - 100</td>
-                      <td></td>
-                      <td>519</td>
-                      <td>518</td>
-                      <td>502</td>
+                      <td className='bg-primary'>90 - 100</td>
+                      <td className='bg-primary'></td>
+                      <td className='bg-primary'>519</td>
+                      <td className='bg-primary'>518</td>
+                      <td className='bg-primary'>502</td>
                     </tr>
                   </tbody>
                 </table>
@@ -180,53 +181,53 @@ const HowToUse = () => {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>22</td>
-                      <td>55</td>
-                      <td>527</td>
-                      <td>2060</td>
-                      <td>502</td>
+                      <td className='bg-danger'>22</td>
+                      <td className='bg-danger'>55</td>
+                      <td className='bg-danger'>527</td>
+                      <td className='bg-danger'>2060</td>
+                      <td className='bg-danger'>502</td>
                     </tr>
                     <tr>
-                      <td>63</td>
-                      <td>55</td>
-                      <td>527</td>
-                      <td>2060</td>
-                      <td>502</td>
+                      <td className='bg-danger'>63</td>
+                      <td className='bg-danger'>55</td>
+                      <td className='bg-danger'>527</td>
+                      <td className='bg-danger'>2060</td>
+                      <td className='bg-danger'>502</td>
                     </tr>
                     <tr>
-                      <td>69</td>
-                      <td></td>
-                      <td>521</td>
-                      <td>2060</td>
-                      <td>502</td>
+                      <td className='bg-orange'>69</td>
+                      <td className='bg-orange'></td>
+                      <td className='bg-orange'>521</td>
+                      <td className='bg-orange'>2060</td>
+                      <td className='bg-orange'>502</td>
                     </tr>
                     <tr>
-                      <td>70</td>
-                      <td></td>
-                      <td>513</td>
-                      <td>528</td>
-                      <td>502</td>
+                      <td className='bg-yellow'>70</td>
+                      <td className='bg-yellow'></td>
+                      <td className='bg-yellow'>513</td>
+                      <td className='bg-yellow'>528</td>
+                      <td className='bg-yellow'>502</td>
                     </tr>
                     <tr>
-                      <td>74</td>
-                      <td></td>
-                      <td>513</td>
-                      <td>528</td>
-                      <td>502</td>
+                      <td className='bg-yellow'>74</td>
+                      <td className='bg-yellow'></td>
+                      <td className='bg-yellow'>513</td>
+                      <td className='bg-yellow'>528</td>
+                      <td className='bg-yellow'>502</td>
                     </tr>
                     <tr>
-                      <td>82</td>
-                      <td></td>
-                      <td>518</td>
-                      <td>522</td>
-                      <td>502</td>
+                      <td className='bg-success'>82</td>
+                      <td className='bg-success'></td>
+                      <td className='bg-success'>518</td>
+                      <td className='bg-success'>522</td>
+                      <td className='bg-success'>502</td>
                     </tr>
                     <tr>
-                      <td>94</td>
-                      <td></td>
-                      <td>519</td>
-                      <td>518</td>
-                      <td>502</td>
+                      <td className='bg-primary'>94</td>
+                      <td className='bg-primary'></td>
+                      <td className='bg-primary'>519</td>
+                      <td className='bg-primary'>518</td>
+                      <td className='bg-primary'>502</td>
                     </tr>
                   </tbody>
                 </table>

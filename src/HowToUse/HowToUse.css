@@ -38,3 +38,18 @@
 .table td {
   vertical-align: middle;
 }
+
+.bg-orange {
+    background-color: #FFA500 !important;
+    color: #000;
+  }
+
+.bg-yellow {
+    background-color: #FFD700 !important;
+    color: #000;
+}
+
+.bg-lightgreen {
+    background-color: #7CFC00 !important;
+    color: #000;
+}
