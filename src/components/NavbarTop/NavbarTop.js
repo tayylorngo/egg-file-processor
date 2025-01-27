@@ -1,5 +1,6 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
+import { Link } from 'react-router-dom';
 
 const NavbarTop = () => {
   return (
@@ -28,15 +29,15 @@ const NavbarTop = () => {
     >
       <ul className="navbar-nav mb-2 mb-lg-0">
         <li className="nav-item">
-        <a className="navbar-brand d-flex justify-content-center" href="/">
+        <Link className="navbar-brand d-flex justify-content-center" to="/">
           <img src="favicon.ico" alt="Logo" width="30" height="30" />
-        </a>
+        </Link>
         </li>
         <li className="nav-item">
-          <a className="nav-link active" href="/">Egg File Processor</a>
+          <Link className="nav-link active" to="/">Egg File Processor</Link>
         </li>
         <li className="nav-item">
-          <a className="nav-link" href="/">How To Use</a>
+            <Link className="nav-link" to="/how-to-use">How To Use</Link>
         </li>
         <li className="nav-item">
           <a className="nav-link" href="https://github.com/tayylorngo/egg-file-processor">Source Code</a>
