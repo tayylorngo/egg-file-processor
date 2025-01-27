@@ -3,8 +3,13 @@ import "bootstrap/dist/css/bootstrap.css";
 
 const NavbarTop = () => {
   return (
-<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
-  <div class="container-fluid">
+<nav className="navbar navbar-expand-lg navbar-light bg-body-tertiary" 
+        style={{
+        backgroundColor: "#f8f9fa", // Light gray color
+        borderBottom: "1px solid #e0e0e0", // Optional border for definition
+        color: "#343a40", // Dark gray text for contrast
+      }}>
+  <div className="container-fluid">
     <button
       data-mdb-collapse-init
       class="navbar-toggler"
@@ -14,7 +19,7 @@ const NavbarTop = () => {
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
-      <i class="fas fa-bars"></i>
+      <i className="fas fa-bars"></i>
     </button>
 
     <div

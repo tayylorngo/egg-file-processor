@@ -6,6 +6,7 @@ import Spinner from './components/Spinner/Spinner';
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css"
 import NavbarTop from "./components/NavbarTop/NavbarTop";
+import NavbarBottom from "./components/NavbarBottom/NavbarBottom";
 // import NavbarBottom from "./components/NavbarBottom/NavbarBottom";
 
 function App() {
@@ -114,7 +115,6 @@ function App() {
     <>
     <NavbarTop/>
     <div className="container pb-1 mt-10 mb-5">
-      {/* <NavbarBottom/> */}
       <h1 className="fs-1">EGG File Processor</h1>
       <p className="mb-1 fs-5">Upload your EGG file (.xlsx) and define your grade criteria.</p>
 
@@ -175,6 +175,7 @@ function App() {
         editedRuleIndex={editingRule}
       />
     </div>
+    <NavbarBottom/>
     </>
   );
 }
