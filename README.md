@@ -1,70 +1,95 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# How to Use the EGG File Processor
 
-## Available Scripts
+This document explains how to use the **EGG File Processor**, a tool designed to process and modify `.xlsx` EGG files with specific grade criteria and report card comments. Follow the steps below for a seamless experience.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Features
+- Upload and process `.xlsx` EGG files.
+- Define grade ranges and adjust grades within those ranges.
+- Add report card comment codes for students based on grades.
+- Download the processed file with applied changes.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## How to Use
 
-### `npm test`
+### **Step 1: Upload Your EGG File**
+1. Click the **"Choose File"** button.
+2. Select the EGG file you want to process. Ensure the file is in `.xlsx` format.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+### **Step 2: Define Grade Ranges**
+1. Click **"Add Grade Criteria"** to create a new grade range.
+2. Specify the **minimum** and **maximum** grades for the range.
+3. Ensure grade ranges do not overlap with one another.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+> **Note**: Overlapping grade ranges will result in errors. Define unique ranges.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### **Step 3: Adjust Grades (Optional)**
+1. Enter the grade you'd like to assign to the selected range.
+2. If you leave this field blank, grades within the range will remain unchanged.
 
-### `npm run eject`
+> **Example**: Grades in the range `0 - 64` can be adjusted to `55`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### **Step 4: Add Report Card Comments (Optional)**
+1. Enter up to **three comment codes** for each grade range.
+2. You can search for comment codes by typing their number or description.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### **Step 5: Add Additional Criteria**
+Repeat **Steps 2–4** to define multiple grade ranges and comments if needed.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### **Step 6: Process & Download**
+1. Review all defined grade rules and comments.
+2. Make edits using the **Edit** button if needed.
+3. Click **"Upload and Process"** to start processing your file.
+4. Once processing is complete, a **Download Processed File** link will appear.
+5. Click the link to download the modified file.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+> **Note**: Processing may take up to one minute. Verify the downloaded file before uploading to STARS or other systems.
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Example
 
-### Analyzing the Bundle Size
+### **Sample Grade Criteria**
+| Grade Range | Adjusted Grade | Comment 1 | Comment 2 | Comment 3 |
+|-------------|----------------|-----------|-----------|-----------|
+| 0 - 64      | 55             | 527       | 2060      | 502       |
+| 65 - 69     |                | 521       | 2060      | 502       |
+| 70 - 79     |                | 513       | 528       | 502       |
+| 80 - 89     |                | 518       | 522       | 502       |
+| 90 - 100    |                | 519       | 518       | 502       |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## Important Notes
+- Grade ranges are **inclusive**, meaning `55–65` includes grades `55` and `65`.
+- Empty fields in the processed file indicate no changes were made to the original data.
+- Always verify the processed grades and comments before submission.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## FAQ
+### **What happens if I don't specify adjusted grades?**
+The grades within that range will remain unchanged.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### **Can I add overlapping grade ranges?**
+No, overlapping ranges are not allowed. Ensure all ranges are unique.
 
-### Deployment
+### **How do I remove or edit existing criteria?**
+Use the **Edit** or **Remove** buttons for each rule in the list.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+For further assistance, contact the development team or refer to the in-app documentation.
