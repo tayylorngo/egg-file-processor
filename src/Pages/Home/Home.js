@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GradeRuleModal from "../../components/GradeRuleModal/GradeRuleModal";
 import GradeRuleList from "../../components/GradeRuleList/GradeRuleList";
 import GradeRuleEditModal from "../../components/GradeRuleEditModal/GradeRuleEditModal";
@@ -8,17 +8,35 @@ import "../../App.css";
 import "bootstrap/dist/css/bootstrap.css"
 
 function Home() {
+  
   const [file, setFile] = useState(null);
-  const [rules, setRules] = useState([]);
+  const [rules, setRules] = useState(() => {
+    try {
+      const savedRules = localStorage.getItem('gradeRules');
+      return savedRules ? JSON.parse(savedRules) : [];
+    } catch (error) {
+      console.error('Error loading saved rules:', error);
+      return [];
+    }
+  });
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleteAll, setIsDeleteAll] = useState(false);
   const [editingRule, setEditingRule] = useState(-1);
   const [deletingRule, setDeletingRule] = useState(-1);
 
   const [message, setMessage] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('gradeRules', JSON.stringify(rules));
+    } catch (error) {
+      console.error('Error saving rules:', error);
+    }
+  }, [rules]);
 
   // Handle file selection
   const handleFileChange = (event) => {
@@ -35,8 +53,9 @@ function Home() {
     setIsEditModalOpen(!isEditModalOpen);
   };
 
-  const toggleDeleteRuleModal = (index) => {
+  const toggleDeleteRuleModal = (index, isDeleteAll) => {
     setDeletingRule(index);
+    setIsDeleteAll(isDeleteAll);
     setIsDeleteModalOpen(!isDeleteModalOpen);
   };
 
@@ -48,10 +67,16 @@ function Home() {
       return updatedRules;
     });
   };
-  
+
   // Remove a rule
   const handleRemoveRule = (index) => {
     setRules(rules.filter((_, i) => i !== index));
+  };
+
+  // Remove all rule
+  const handleRemoveAllRules = () => {
+    setIsDeleteAll(false);
+    setRules([]);
   };
 
   // Edit a rule
@@ -144,8 +169,19 @@ function Home() {
           openEditRuleModal={toggleEditRuleModal}
       />
       
-      <button onClick={toggleCreateRuleModal} className="btn btn-primary w-50">Add Grade Criteria</button>
+      <div className="d-flex justify-content-center align-items-center gap-3" style={{ width: "60%", margin: "0 auto" }}>
+        <button onClick={toggleCreateRuleModal} className="btn btn-primary" style={{ flex: "7" }}>
+          Add Grade Criteria
+        </button>
+        {
+        rules.length > 0  ? (<button onClick={() => toggleDeleteRuleModal(-1, true)} className="btn btn-danger" style={{ flex: "3" }}>
+          Clear All
+        </button>
+        ) 
+        : null
+        }
       </div>
+    </div>
 
       <button 
         onClick={handleFileUpload} 
@@ -184,6 +220,8 @@ function Home() {
           onClose={toggleDeleteRuleModal}
           onDeleteRule={handleRemoveRule}
           deletingRuleIndex={deletingRule}
+          deleteAll = {handleRemoveAllRules}
+          isDeleteAll={isDeleteAll}
       />
     </div>
     </>

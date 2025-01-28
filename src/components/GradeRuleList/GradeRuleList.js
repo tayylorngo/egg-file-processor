@@ -1,23 +1,10 @@
-import {React, useEffect} from "react";
+import {React} from "react";
 import "./GradeRuleList.css";
 import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Import Bootstrap JS
 import commentCodes from "../comments.json";
 
 const GradeRuleList = ({ rules, openDeleteRuleModal, openEditRuleModal }) => {
-
-  useEffect(() => {
-    // Initialize tooltips for Bootstrap 5
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    const tooltipList = [...tooltipTriggerList].map(
-      (tooltipTriggerEl) => new window.bootstrap.Tooltip(tooltipTriggerEl)
-    );
-
-    return () => {
-      // Cleanup tooltips on component unmount
-      tooltipList.forEach((tooltip) => tooltip.dispose());
-    };
-  }, []);
 
   return (
     <div className="">
@@ -83,7 +70,7 @@ const GradeRuleList = ({ rules, openDeleteRuleModal, openEditRuleModal }) => {
                     Edit
                   </button>
                   <button
-                    onClick={() => openDeleteRuleModal(index)}
+                    onClick={() => openDeleteRuleModal(index, false)}
                     className="btn btn-danger btn-sm"
                   >
                     Remove

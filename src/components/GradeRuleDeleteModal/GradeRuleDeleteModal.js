@@ -1,11 +1,18 @@
 import { Button, Modal } from 'react-bootstrap';
 
-const GradeRuleDeleteModal = ({ onDeleteRule, isOpen, onClose, deletingRuleIndex }) => {
+const GradeRuleDeleteModal = ({ onDeleteRule, isOpen, onClose, deletingRuleIndex, isDeleteAll, deleteAll }) => {
   
-  const handleConfirmDelete = () => {
-    onDeleteRule(deletingRuleIndex);
+  const handleConfirmDelete = (isDeleteAll) => {
+    if(isDeleteAll){
+        deleteAll();
+    }
+    else {
+      onDeleteRule(deletingRuleIndex);
+    }
     onClose();
   };
+
+  let message = isDeleteAll ? (<h5>Are you sure you want to delete all grading criteria?</h5>) : (<h5>Are you sure you want to delete?</h5>);
 
   return (
     <Modal show={isOpen} onHide={onClose} centered>
@@ -14,14 +21,14 @@ const GradeRuleDeleteModal = ({ onDeleteRule, isOpen, onClose, deletingRuleIndex
       </Modal.Header>
       
       <Modal.Body>
-        <h5>Are you sure you want to delete?</h5>
+        {message}
       </Modal.Body>
       
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>
           Cancel
         </Button>
-        <Button variant="danger" onClick={handleConfirmDelete}>
+        <Button variant="danger" onClick={() => handleConfirmDelete(isDeleteAll)}>
           Yes I am sure!
         </Button>
       </Modal.Footer>
