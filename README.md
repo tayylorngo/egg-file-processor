@@ -1,5 +1,5 @@
 
-# How to Use the EGG File Processor
+# How to Use the EGG File Processor: https://eggfileprocessor.netlify.app/
 
 This document explains how to use the **EGG File Processor**, a tool designed to process and modify `.xlsx` EGG files with specific grade criteria and report card comments. Follow the steps below for a seamless experience.
 
