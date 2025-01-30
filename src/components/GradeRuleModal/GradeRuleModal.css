@@ -86,3 +86,38 @@
     cursor: pointer;
     font-size: 16px;
   }
+
+  .comment-select .css-1uccc91-singleValue {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    min-width: 250px; /* 🚀 Default size */
+    max-width: 400px; /* 🚀 Allows larger input fields on bigger screens */
+}
+
+.comment-select .css-26l3qy-menu { 
+    max-width: 400px !important; /* 🚀 Prevents dropdown from expanding */
+    word-wrap: break-word;
+    overflow-x: hidden;
+}
+
+/* 🚀 Adjust input width for different screen sizes */
+@media (max-width: 1024px) {
+  .comment-select .css-1uccc91-singleValue {
+    max-width: 350px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .comment-select .css-1uccc91-singleValue {
+    max-width: 300px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .comment-select .css-1uccc91-singleValue {
+    max-width: 250px !important; /* Mobile size */
+  }
+}
+

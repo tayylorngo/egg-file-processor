@@ -262,7 +262,6 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
             </div>
           </div>
         
-          <div className="form-row">
             <div className="form-group">
               <label>Comment Code 1:</label>
               <Select
@@ -272,11 +271,11 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
                 isClearable
                 filterOption={customFilter}
                 placeholder="Type or select a comment..."
-                className="select-form"
+                className="select-form comment-select"
               />
             </div>
 
-            <div className="form-group">
+          <div className="form-group">
               <label>Comment Code 2:</label>
               <Select
                 options={commentOptions}
@@ -285,11 +284,11 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
                 isClearable
                 filterOption={customFilter}
                 placeholder="Type or select a comment..."
-                className="select-form"
+                className="select-form comment-select"
               />
             </div>
-
-            <div className="form-group">
+          
+          <div className="form-group">
               <label>Comment Code 3:</label>
               <Select
                 options={commentOptions}
@@ -298,16 +297,9 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
                 isClearable
                 filterOption={customFilter}
                 placeholder="Type or select a comment..."
-                className="select-form"
+                className="select-form comment-select"
               />
             </div>
-            
-
-
-
-          </div>
-
-        
           <div className="text-center row form-group">
             <button type="submit" className="btn btn-success mb-1">
               Add
