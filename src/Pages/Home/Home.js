@@ -62,9 +62,29 @@ function Home() {
   // Add a new rule
   const handleAddRule = (newRule) => {
     setRules((prevRules) => {
-      // Add the new rule and sort by mingrade
-      const updatedRules = [...prevRules, newRule].sort((a, b) => a.minGrade - b.minGrade);
-      return updatedRules;
+      // Append new rule
+      const updatedRules = [...prevRules, newRule];
+  
+      // Sort Rules with a custom function
+      return updatedRules.sort((a, b) => {
+        const aHasNullGrade = a.minGrade === null || a.maxGrade === null;
+        const bHasNullGrade = b.minGrade === null || b.maxGrade === null;
+  
+        // Case 1: Both have valid min/max grades → Sort numerically
+        if (!aHasNullGrade && !bHasNullGrade) {
+          return a.minGrade - b.minGrade || a.maxGrade - b.maxGrade;
+        }
+  
+        // Case 2: Only one has null min/max → Move the one with null to the end
+        if (aHasNullGrade && !bHasNullGrade) return 1;
+        if (!aHasNullGrade && bHasNullGrade) return -1;
+  
+        // Case 3: Both have null min/max → Sort by specialGrade alphabetically
+        const specialA = String(a.specialGrade || ""); // Ensure it's a string
+        const specialB = String(b.specialGrade || "");
+  
+        return specialA.localeCompare(specialB);
+      });
     });
   };
 
@@ -163,6 +183,7 @@ function Home() {
             minGrade: rule.minGrade,
             maxGrade: rule.maxGrade,
             changeTo: rule.changeTo,
+            specialGrade: rule.specialGrade,
             comments: rule.comments,
           }))}
           openDeleteRuleModal={toggleDeleteRuleModal}

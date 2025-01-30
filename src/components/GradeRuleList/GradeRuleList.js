@@ -27,6 +27,11 @@ const GradeRuleList = ({ rules, openDeleteRuleModal, openEditRuleModal }) => {
             {rules.map((rule, index) => (
               <tr key={index}>
                 {
+                  rule.specialGrade != null ? 
+                  <td className="text-center align-middle">
+                    {rule.specialGrade.value}
+                  </td> 
+                  :
                   rule.minGrade === rule.maxGrade ? 
                   <td className="text-center align-middle">
                       {rule.minGrade}
