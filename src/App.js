@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavbarTop from './components/NavbarTop/NavbarTop';
-import NavbarBottom from './components/NavbarBottom/NavbarBottom';
+// import NavbarBottom from './components/NavbarBottom/NavbarBottom';
 import "./App.css"
 import Home from './Pages/Home/Home';
 import HowToUse from './Pages/HowToUse/HowToUse';
@@ -22,7 +22,7 @@ function App() {
             </>
           } />
         </Routes>
-        <NavbarBottom />
+        {/* <NavbarBottom /> */}
       </div>
     </Router>
   );

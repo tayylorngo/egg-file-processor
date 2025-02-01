@@ -31,11 +31,11 @@ const HowToUse = () => {
           <Accordion.Body>
             <ol>
               <li>Click "Add Grade Criteria"</li>
-              <li>Set minimum and maximum grade values.</li>
+              <li>Enter the minimum and maximum grade values or choose a special grade.</li>
             </ol>
             
             <div className="alert alert-warning mt-3">
-              <strong>Note:</strong> Ranges cannot overlap with other criteria.
+              <strong>Note:</strong> Grade ranges cannot overlap, and special grades must be unique.
             </div>
           </Accordion.Body>
         </Accordion.Item>
@@ -94,7 +94,7 @@ const HowToUse = () => {
             <ol>
               <li>Review all grade rules and comments. 
               To make changes, click the "Edit" button.</li>
-              <li>If everything looks good, click "Upload and Process."</li>
+              <li>If all details are correct, click "Upload and Process."</li>
               <li>The download link will appear once the file is ready, 
                 which may take up to a minute.</li>
               <li>Once processing is complete, click "Download Processed File" to save it.</li>
@@ -243,7 +243,7 @@ const HowToUse = () => {
         <h5 className='mb-3'>Important Notes:</h5>
         <ul className="text-left"> {/* Add text-left class here */}
           <li>Grade ranges are inclusive, meaning a range of 55–65 will include grades 55 and 65. </li>
-          <li>If no grade change or comment is specified, the cell will remain unchanged.</li>
+          <li>If a grade is not covered by any range or no grade change or comment is specified, the cell will remain unchanged and no comments will be added.</li>
         </ul>
       </div>
       </Accordion.Body>
