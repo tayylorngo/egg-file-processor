@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, Form
+from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from openpyxl import load_workbook
@@ -7,16 +7,13 @@ import json
 
 app = FastAPI()
 
-# Add CORS middleware
+# CORS Middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "https://eggfileprocessor.netlify.app"
-        ],  # React frontend URL
+    allow_origins=["http://localhost:3000", "https://eggfileprocessor.netlify.app"],
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all methods
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 @app.post("/upload/")
@@ -24,52 +21,91 @@ async def process_file(file: UploadFile = File(...), rules: str = Form(...)):
     workbook = load_workbook(file.file)
     sheet = workbook["Student Marks"]
 
-    # Parse and validate rules
-    rules = json.loads(rules)  # Convert JSON string to Python list
+    # Parse JSON rules
+    try:
+        rules = json.loads(rules)
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=400, detail="Invalid JSON format for rules.")
 
+    # Validate rules
     for rule in rules:
-        min_grade = int(rule["minGrade"])
-        max_grade = int(rule["maxGrade"])
+        if rule.get("minGrade") is not None and rule.get("maxGrade") is not None:
+            try:
+                min_grade = float(rule["minGrade"])
+                max_grade = float(rule["maxGrade"])
+            except ValueError:
+                raise HTTPException(status_code=400, detail=f"Invalid min/max grade: {rule}")
 
-        if not rule["changeTo"] == "N/A":
-            change_to = (0 <= int(rule["changeTo"]) <= 100)
-        else:
-            change_to = True
+            # Validate "changeTo"
+            change_to = True  # Default if "N/A"
+            if rule.get("changeTo") not in (None, "N/A"):
+                try:
+                    change_to_value = float(rule["changeTo"])
+                    change_to = (0 <= change_to_value <= 100)
+                except ValueError:
+                    raise HTTPException(status_code=400, detail=f"Invalid changeTo value: {rule['changeTo']}")
 
-        if not (0 <= min_grade <= 100 and 0 <= max_grade <= 100 and change_to):
-            raise HTTPException(
-                status_code=400,
-                detail=f"Invalid grade range or adjustment: {rule}. Grades must be between 0 and 100."
-            )
+            # Ensure valid range
+            if not (0 <= min_grade <= 100 and 0 <= max_grade <= 100 and change_to):
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Invalid grade range or adjustment: {rule}"
+                )
 
-        if min_grade > max_grade:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Invalid rule: Minimum grade ({min_grade}) cannot be greater than maximum grade ({max_grade})."
-            )
+            if min_grade > max_grade:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Invalid rule: Minimum grade ({min_grade}) cannot be greater than maximum grade ({max_grade})."
+                )
 
-    # Apply rules to grades
+    # Process grades
     for row in range(2, sheet.max_row + 1):
         grade_cell = sheet.cell(row=row, column=11)  # Column K
-        if grade_cell.value is not None:
-            if isinstance(grade_cell.value, str) and not grade_cell.value.isnumeric():
-                continue
-            grade = float(grade_cell.value)
-            for rule in rules:
+        cell_value = grade_cell.value
+
+        # Normalize grade
+        if isinstance(cell_value, str) and cell_value.isnumeric():
+            grade = float(cell_value)
+        elif isinstance(cell_value, (int, float)):
+            grade = float(cell_value)
+        else:
+            grade = cell_value  # Keep as is if it's a special grade
+
+    for row in range(2, sheet.max_row + 1):
+        grade_cell = sheet.cell(row=row, column=11)  # Column K
+        cell_value = grade_cell.value
+
+        # Normalize grade: Convert to float if numeric, keep as string if special grade
+        if isinstance(cell_value, str) and cell_value.replace(".", "", 1).isdigit():
+            grade = float(cell_value)  # Convert to float if it's a number (including decimals)
+        elif isinstance(cell_value, (int, float)):
+            grade = float(cell_value)
+        else:
+            grade = cell_value  # Keep as-is (likely a special grade string)
+
+        for rule in rules:
+            # Standard grade range check (Only if grade is numeric)
+            if rule.get("specialGrade") is None and isinstance(grade, float):
                 if float(rule["minGrade"]) <= grade <= float(rule["maxGrade"]):
-                    if rule["changeTo"] != "N/A":
+                    if rule.get("changeTo") not in (None, "N/A"):
                         grade_cell.value = float(rule["changeTo"])
-                    comments = rule["comments"]
-                    if comments[0] != "N/A":
-                        sheet.cell(row=row, column=12).value = comments[0] # Column L
-                    if comments[1] != "N/A":
-                        sheet.cell(row=row, column=13).value = comments[1] # Column M
-                    if comments[2] != "N/A":
-                        sheet.cell(row=row, column=14).value = comments[2] # Column M
+                    for i, col in enumerate(range(12, 15)):  # Columns L, M, N
+                        if rule["comments"][i] not in (None, "N/A"):
+                            sheet.cell(row=row, column=col).value = rule["comments"][i]
                     break
 
-    # Save the workbook
+            # Special grade match (Only if grade is a string)
+            elif rule.get("specialGrade") and isinstance(grade, str):
+                if rule["specialGrade"].get("value") == grade:
+                    for i, col in enumerate(range(12, 15)):  # Columns L, M, N
+                        if rule["comments"][i] not in (None, "N/A"):
+                            sheet.cell(row=row, column=col).value = rule["comments"][i]
+                    break
+
+
+    # Save and return modified Excel file
     output = BytesIO()
     workbook.save(output)
     output.seek(0)
-    return StreamingResponse(output, media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", headers={"Content-Disposition": "attachment; filename=processed_grades.xlsx"})
+    return StreamingResponse(output, media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                headers={"Content-Disposition": "attachment; filename=processed_grades.xlsx"})

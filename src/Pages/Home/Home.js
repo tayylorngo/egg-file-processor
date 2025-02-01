@@ -153,6 +153,7 @@ function Home() {
 
     try {
       const BASE_URL = "https://swift-grades.onrender.com";
+      // const BASE_URL = "http://127.0.0.1:8000";
       const endpoint = "/upload/";
       const uploadUrl = `${BASE_URL}${endpoint}`;
   
