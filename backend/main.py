@@ -7,10 +7,9 @@ import json
 
 app = FastAPI()
 
-# ✅ Fix CORS (Allow All for Debugging)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Temporarily allow all origins
+    allow_origins=["http://localhost:3000", "https://eggfileprocessor.netlify.app"],  # Allow only these
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
