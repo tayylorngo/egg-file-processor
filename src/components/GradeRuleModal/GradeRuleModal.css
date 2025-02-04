@@ -1,123 +1,66 @@
 /* GradeRuleModal.css */
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 60vw; /* Use a percentage-based width */
-    max-width: 800px; /* Set a maximum width for larger screens */
-    min-width: 320px; /* Prevent it from being too small */
-    max-height: 90vh; /* Prevent modal from overflowing on smaller screens */
-    text-align: left;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px; /* Ensure spacing on smaller screens */
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 70vw; /* Increased width for better visibility */
+  max-width: 900px; /* Increased max-width */
+  min-width: 320px; /* Prevent it from being too small */
+  max-height: 95vh; /* Increased height to make better use of screen space */
+  text-align: left;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Allow scrolling if necessary */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px; /* Ensure spacing on smaller screens */
 }
 
 .modal-title {
-    text-align: center;
+  text-align: center;
 }
 
 .centered-modal .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 80vh;
-    max-width: 90%;
-    text-align: left;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 85vw; /* Adjusted width for a better view */
+  max-width: 95%;
+  text-align: left;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-
-  .form-group-row {
-    display: flex;
-    justify-content: space-between; /* Space out the inputs */
-    gap: 10px; /* Add spacing between the inputs */
-  }
-  
-  .form-group {
-    flex: 1; /* Make inputs equal width */
-    padding: 20px;
-  }
-
-  .form-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-  
-  .half-width {
-    flex: 1;
-  }
-
-  .select-form {
-    margin-top: 10px;
-  }
-  
-  button {
-    /* margin-top: 15px; */
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-
-  .comment-select .css-1uccc91-singleValue {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-    min-width: 250px; /* 🚀 Default size */
-    max-width: 400px; /* 🚀 Allows larger input fields on bigger screens */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem; /* Added more vertical spacing */
 }
 
-.comment-select .css-26l3qy-menu { 
-    max-width: 400px !important; /* 🚀 Prevents dropdown from expanding */
-    word-wrap: break-word;
-    overflow-x: hidden;
+.form-group {
+  flex: 1;
+  min-width: 150px;
+  margin-bottom: 1rem; /* Added margin below each field for spacing */
 }
-
-/* 🚀 Adjust input width for different screen sizes */
-@media (max-width: 1024px) {
-  .comment-select .css-1uccc91-singleValue {
-    max-width: 350px !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .comment-select .css-1uccc91-singleValue {
-    max-width: 300px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .comment-select .css-1uccc91-singleValue {
-    max-width: 250px !important; /* Mobile size */
-  }
-}
-
