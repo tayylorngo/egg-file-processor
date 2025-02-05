@@ -112,7 +112,7 @@ const GradeRuleEditModal = ({ isOpen, onClose, onEditRule, rules, editedRuleInde
       };
     }
 
-    if (!minGrade && !maxGrade && !specialGrade) {
+    if ((minGrade == null || maxGrade == null) && specialGrade == null) {
       alert("Please fill in a minimum and maximum grade or a special grade.");
       return;
     }
