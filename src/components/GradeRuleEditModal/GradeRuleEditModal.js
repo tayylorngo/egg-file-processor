@@ -139,11 +139,61 @@ const GradeRuleEditModal = ({ isOpen, onClose, onEditRule, rules, editedRuleInde
           <div className="form-row">
             <div className="form-group half-width">
               <label>Min Grade:</label>
-              <Select options={gradeOptions[0]} value={minGrade} onChange={setMinGrade} isClearable isDisabled={specialGrade !== null} />
+              <Select 
+                options={gradeOptions[0]} 
+                value={minGrade} 
+                onChange={setMinGrade} 
+                isClearable 
+                isDisabled={specialGrade !== null} 
+                onInputChange={(inputValue) => {
+                  // Allow the user to type freely without truncation
+                  if (!isNaN(inputValue) && inputValue.trim() !== "") {
+                    setMinGrade({ value: inputValue, label: inputValue });
+                  }
+                }}
+                onBlur={() => {
+                  // Validate the value when the user clicks away
+                  const value = parseInt(minGrade?.value, 10);
+                  if (isNaN(value) || value < 0) {
+                    setMinGrade(null); // Default fallback
+                  } else if (value > 100) {
+                    setMinGrade(null); // Cap to 0
+                  } else {
+                    setMinGrade({
+                      value: value.toString(),
+                      label: value.toString(),
+                    }); // Ensure valid formatting
+                  }
+                }}
+              />
             </div>
             <div className="form-group half-width">
               <label>Max Grade:</label>
-              <Select options={gradeOptions[1]} value={maxGrade} onChange={setMaxGrade} isClearable isDisabled={specialGrade !== null} />
+              <Select 
+                options={gradeOptions[1]} 
+                value={maxGrade} 
+                onChange={setMaxGrade} 
+                isClearable 
+                isDisabled={specialGrade !== null} 
+                onInputChange={(inputValue) => {
+                  if (!isNaN(inputValue) && inputValue.trim() !== "") {
+                    setMaxGrade({ value: inputValue, label: inputValue });
+                  }
+                }}
+                onBlur={() => {
+                  const value = parseInt(maxGrade?.value, 10);
+                  if (isNaN(value) || value < 0) {
+                    setMaxGrade(null);
+                  } else if (value > 100) {
+                    setMaxGrade(null);
+                  } else {
+                    setMaxGrade({
+                      value: value.toString(),
+                      label: value.toString(),
+                    });
+                  }
+                }}
+              />
             </div>
           </div>
 
@@ -155,7 +205,31 @@ const GradeRuleEditModal = ({ isOpen, onClose, onEditRule, rules, editedRuleInde
 
             <div className="form-group">
               <label>Change To:</label>
-              <Select options={gradeOptions[0]} value={changeTo} onChange={setChangeTo} isClearable isDisabled={specialGrade !== null} />
+              <Select 
+                options={gradeOptions[0]} 
+                value={changeTo} 
+                onChange={setChangeTo} 
+                isClearable 
+                isDisabled={specialGrade !== null} 
+                onInputChange={(inputValue) => {
+                  if (!isNaN(inputValue) && inputValue.trim() !== "") {
+                    setChangeTo({ value: inputValue, label: inputValue });
+                  }
+                }}
+                onBlur={() => {
+                  const value = parseInt(changeTo?.value, 10);
+                  if (isNaN(value) || value < 0) {
+                    setChangeTo(null); // Reset to null if invalid
+                  } else if (value > 100) {
+                    setChangeTo(null);
+                  } else {
+                    setChangeTo({
+                      value: value.toString(),
+                      label: value.toString(),
+                    });
+                  }
+                }}
+              />
             </div>
           </div>    
 
