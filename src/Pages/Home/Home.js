@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.css"
 
 function Home() {
   
-  const [file, setFile] = useState(null);
+  const [grades, setGrades] = useState("");
   const [rules, setRules] = useState(() => {
     try {
       const savedRules = localStorage.getItem('gradeRules');
@@ -38,10 +38,52 @@ function Home() {
     }
   }, [rules]);
 
-  // Handle file selection
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+  const handleProcessGrades = async () => {
+    if (!grades.trim()) {
+      setMessage("Please enter grades first!");
+      return;
+    }
+  
+    if (rules.length === 0) {
+      setMessage("Please add at least one grade rule.");
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append("grades", grades);
+    formData.append("rules", JSON.stringify(rules));
+  
+    setMessage("");
+    setLoading(true);
+  
+    try {
+      const BASE_URL = "https://swift-grades.onrender.com";
+      // const BASE_URL = "http://127.0.0.1:8000"; 
+      const endpoint = "/process/";
+      const response = await fetch(`${BASE_URL}${endpoint}`, {
+        method: "POST",
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to process grades.");
+      }
+  
+      // ✅ Convert response to blob (Excel file)
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+  
+      // ✅ Set the download URL for the processed file
+      setDownloadUrl(url);
+      setMessage("Grades processed successfully! Click the button below to download the file.");
+    } catch (error) {
+      console.error("Error:", error);
+      setMessage("Error processing grades. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   // Open or close the modal
   const toggleCreateRuleModal = () => {
@@ -132,68 +174,19 @@ function Home() {
     });
   };
   
-  // Handle file upload
-  const handleFileUpload = async () => {
-    if (!file) {
-      setMessage("Please select a file first!");
-      return;
-    }
-
-    if (rules.length === 0) {
-      setMessage("Please add at least one grade rule.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("rules", JSON.stringify(rules)); // Send rules as JSON
-
-    setMessage("");
-    setLoading(true); // Show spinner
-
-    try {
-      const BASE_URL = "https://swift-grades.onrender.com";
-      // const BASE_URL = "http://127.0.0.1:8000";
-      const endpoint = "/upload/";
-      const uploadUrl = `${BASE_URL}${endpoint}`;
-  
-      const response = await fetch(uploadUrl, {
-        method: "POST",
-        body: formData, // Ensure `formData` is properly constructed
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to process the file.");
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      setDownloadUrl(url);
-      setMessage("File processed successfully! Click the button below to download it.");
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      setMessage("Error uploading file. Please try again.");
-    }
-    finally {
-      setLoading(false); // Hide spinner
-    }
-  };
-
   return (      
     <>
     <div className="container pb-1 mt-10 mb-5">
       <h1 className="fs-1">EGG File Processor</h1>
-      <p className="mb-1 fs-5">Upload your EGG file (.xlsx) and define your grade criteria.</p>
+      <p className="mb-1 fs-5">Paste grades from EGG file and define your grade criteria.</p>
 
-      <div className="form-group">
-        <input 
-          type="file" 
-          id="formFile" 
-          onChange={handleFileChange} 
-          className="form-control" 
-        />
-      </div>
-
+      <textarea 
+        className="form-control" 
+        rows="6" 
+        placeholder="paste grades here" 
+        value={grades} 
+        onChange={(e) => setGrades(e.target.value)}
+      ></textarea>
 
       <div className="mt-1 border border-1 mb-2 p-3 text-center">
       <GradeRuleList
@@ -222,20 +215,18 @@ function Home() {
       </div>
     </div>
 
-      <button 
-        onClick={handleFileUpload} 
-        className="btn btn-success mt-3 w-100"
-      >
-        Upload and Process
-      </button>
+    <button onClick={handleProcessGrades} className="btn btn-success mt-3 w-100">
+        Process Grades
+    </button>
+
 
       <p className="message mt-3">{message}</p>
 
       {loading && <Spinner />} {/* Show Spinner when loading is true */}
-
-      {downloadUrl && file && (
-        <a href={downloadUrl} download={file.name.slice(0, -5) + "_updated.xlsx"} className="download-link">
-          Download Processed File
+      
+      {downloadUrl && (
+        <a href={downloadUrl} download="processed_grades.xlsx" className="btn btn-primary">
+          Download Processed Grades
         </a>
       )}
 
