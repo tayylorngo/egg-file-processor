@@ -47,7 +47,7 @@ async def process_grades(grades: str = Form(...), rules: str = Form(...)):
                 if float(rule["minGrade"]) <= grade <= float(rule["maxGrade"]):
                     if rule.get("changeTo") not in (None, "N/A"):
                         updated_grade = float(rule["changeTo"])
-                    comments = rule["comments"]
+                    comments = ["" if comment == "N/A" else comment for comment in rule["comments"]]
                     break
 
         # ✅ Append processed grades & comments to the sheet
