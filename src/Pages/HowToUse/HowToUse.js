@@ -13,13 +13,16 @@ const HowToUse = () => {
         {/* Step 1 */}
         <Accordion.Item eventKey="0">
           <Accordion.Header>
-            <FaUpload className="me-2" /> Step 1: Upload Your EGG File
+            <FaUpload className="me-2" /> Step 1: Copy & paste grades from EGG file
           </Accordion.Header>
           <Accordion.Body>
             <ol>
-              <li>Click the "Choose File" button</li>
-              <li>Select your EGG file (.xlsx format)</li>
+              <li>Copy the column containing all the grades in your EGG file on Microsoft Excel.</li>
+              <li>Paste it in the textbox. </li>
             </ol>
+            <div className="alert alert-warning mt-3">
+              <strong>Note:</strong> Each one of your grades should be separated by a new line.
+            </div>
           </Accordion.Body>
         </Accordion.Item>
 
@@ -70,6 +73,9 @@ const HowToUse = () => {
               <li>Enter up to three comment codes. </li>
               <li>You can search for a comment by typing its code or text.</li>
             </ul>
+            <div className="alert alert-warning mt-3">
+              <strong>Note:</strong> This step is optional — leaving it blank will add no comments.
+            </div>
           </Accordion.Body>
         </Accordion.Item>
 
@@ -94,15 +100,21 @@ const HowToUse = () => {
             <ol>
               <li>Review all grade rules and comments. 
               To make changes, click the "Edit" button.</li>
-              <li>If all details are correct, click "Upload and Process."</li>
-              <li>The download link will appear once the file is ready, 
-                which may take up to a minute.</li>
+              <li>If all details are correct, click "Process Grades"</li>
+              {/* <li>The download link will appear once the file is ready, 
+                which may take up to a minute.</li> */}
               <li>Once processing is complete, click "Download Processed File" to save it.</li>
-            </ol>
+              {/* <li>Your file will contain your original grades, the updated grades and all comments specified.</li> */}
+              <li>Open the file and paste the new grades and comments into your EGG file.</li>
 
             <div className="alert alert-info mt-3">
+              <strong>Tip:</strong> To paste, use <strong>CTRL + SHIFT + V (Windows)</strong> or <strong>CMD + SHIFT + V (Mac)</strong>. This will keep the formatting of the original EGG file. 
+            </div>
+            <li>Upload your EGG file to STARS.</li>
+            <div className="alert alert-danger mt-3">
               <strong>Note:</strong> Always verify processed grades before uploading to STARS.
             </div>
+            </ol>
           </Accordion.Body>
         </Accordion.Item>
 
@@ -196,44 +208,41 @@ const HowToUse = () => {
                     </tr>
                     <tr>
                       <td className='bg-orange'>69</td>
-                      <td className='bg-orange'></td>
+                      <td className='bg-orange'>69</td>
                       <td className='bg-orange'>521</td>
                       <td className='bg-orange'>2060</td>
                       <td className='bg-orange'>502</td>
                     </tr>
                     <tr>
                       <td className='bg-yellow'>70</td>
-                      <td className='bg-yellow'></td>
+                      <td className='bg-yellow'>70</td>
                       <td className='bg-yellow'>513</td>
                       <td className='bg-yellow'>528</td>
                       <td className='bg-yellow'>502</td>
                     </tr>
                     <tr>
                       <td className='bg-yellow'>74</td>
-                      <td className='bg-yellow'></td>
+                      <td className='bg-yellow'>74</td>
                       <td className='bg-yellow'>513</td>
                       <td className='bg-yellow'>528</td>
                       <td className='bg-yellow'>502</td>
                     </tr>
                     <tr>
                       <td className='bg-success'>82</td>
-                      <td className='bg-success'></td>
+                      <td className='bg-success'>82</td>
                       <td className='bg-success'>518</td>
                       <td className='bg-success'>522</td>
                       <td className='bg-success'>502</td>
                     </tr>
                     <tr>
                       <td className='bg-primary'>94</td>
-                      <td className='bg-primary'></td>
+                      <td className='bg-primary'>94</td>
                       <td className='bg-primary'>519</td>
                       <td className='bg-primary'>518</td>
                       <td className='bg-primary'>502</td>
                     </tr>
                   </tbody>
                 </table>
-                <div className="alert alert-warning mt-3">
-                  <strong>Note:</strong> Empty cells indicate no grade change from original mark.
-                </div>
               </Card.Body>
             </Card>
           </div>
