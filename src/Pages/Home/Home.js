@@ -183,7 +183,7 @@ function Home() {
       <textarea 
         className="form-control" 
         rows="6" 
-        placeholder="paste grades here" 
+        placeholder="Copy and paste your grades here..." 
         value={grades} 
         onChange={(e) => setGrades(e.target.value)}
       ></textarea>
