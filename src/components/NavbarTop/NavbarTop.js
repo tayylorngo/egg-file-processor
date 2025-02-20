@@ -63,6 +63,9 @@ const NavbarTop = () => {
               <Link className="nav-link" to="/how-to-use">How To Use</Link>
             </li>
             <li className="nav-item">
+              <Link className="nav-link" to="/privacy-and-faq">Privacy Policy</Link>
+            </li>
+            <li className="nav-item">
               <a className="nav-link" href="https://github.com/tayylorngo/egg-file-processor">Source Code</a>
             </li>
           </ul>

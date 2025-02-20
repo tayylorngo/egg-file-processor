@@ -4,6 +4,7 @@ import NavbarTop from './components/NavbarTop/NavbarTop';
 import "./App.css"
 import Home from './Pages/Home/Home';
 import HowToUse from './Pages/HowToUse/HowToUse';
+import PrivacyAndFAQ from './Pages/PrivacyPolicy/PrivacyPolicy';
 
 function App() {
   return (
@@ -19,6 +20,11 @@ function App() {
           <Route path="/how-to-use" element={
             <>
               <HowToUse />
+            </>
+          } />
+          <Route path="/privacy-and-faq" element={
+            <>
+              <PrivacyAndFAQ />
             </>
           } />
         </Routes>
