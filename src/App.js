@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavbarTop from './components/NavbarTop/NavbarTop';
+import DonateButton from './components/DonateButton/DonateButton';
 // import NavbarBottom from './components/NavbarBottom/NavbarBottom';
 import "./App.css"
 import Home from './Pages/Home/Home';
@@ -28,6 +29,7 @@ function App() {
             </>
           } />
         </Routes>
+        <DonateButton />
         {/* <NavbarBottom /> */}
       </div>
     </Router>

@@ -1,0 +1,84 @@
+/* Donation container - ensures correct positioning */
+.donation-container {
+    position: fixed;
+    bottom: 20px; /* Distance from the bottom */
+    right: 20px; /* Distance from the right */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 1000; /* Ensures it stays above other elements */
+  }
+  
+  /* Donation message box */
+  .donation-message {
+    background: #ffffff;
+    color: #333;
+    padding: 12px 15px;
+    font-size: 14px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    margin-bottom: 8px;
+    max-width: 250px;
+    text-align: left;
+    border-left: 4px solid #ff4081;
+    position: relative;
+  }
+  
+  .donation-message p {
+    margin: 0;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  
+/* Close button */
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 12px; /* Reduce text size */
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 18px;  /* Ensures button stays small */
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0; /* Ensure no extra hover space */
+    margin: 0; /* Prevent unintended space */
+    transition: color 0.2s ease-in-out, transform 0.1s ease-in-out;
+  }
+  
+  .close-btn:hover {
+    color: #333; /* Darken color on hover */
+    transform: scale(1.1); /* Slight zoom effect */
+  }
+  
+  
+  
+  /* Donation button */
+  .donate-button {
+    background-color: #ff4081;
+    color: white;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .donate-button:hover {
+    background-color: #d81b60;
+    text-decoration: none;
+  }
+  
