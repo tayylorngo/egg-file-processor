@@ -29,7 +29,7 @@ const GradeRuleDeleteModal = ({ onDeleteRule, isOpen, onClose, deletingRuleIndex
           Cancel
         </Button>
         <Button variant="danger" onClick={() => handleConfirmDelete(isDeleteAll)}>
-          Yes I am sure!
+          Yes, I am sure!
         </Button>
       </Modal.Footer>
     </Modal>
