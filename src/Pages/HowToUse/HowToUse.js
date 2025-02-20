@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaUpload, FaCommentDots, FaDownload, FaSlidersH, FaRegEdit, FaPlusCircle, FaArrowDown, FaFileAlt  } from 'react-icons/fa';
+import { FaUpload, FaCommentDots, FaDownload, FaSlidersH, FaRegEdit, FaPlusCircle, FaArrowDown, FaFileAlt, FaQuestionCircle } from 'react-icons/fa';
 import { Accordion, Card } from 'react-bootstrap';
 import "./HowToUse.css";
 import "bootstrap/dist/css/bootstrap.css";
@@ -18,10 +18,10 @@ const HowToUse = () => {
           <Accordion.Body>
             <ol>
               <li>Copy the column containing all the grades in your EGG file on Microsoft Excel.</li>
-              <li>Paste it in the textbox. </li>
+              <li>Paste it in the textbox.</li>
             </ol>
             <div className="alert alert-warning mt-3">
-              <strong>Note:</strong> Each one of your grades should be separated by a new line.
+              <strong>Note:</strong> Each grade should be separated by a new line.
             </div>
           </Accordion.Body>
         </Accordion.Item>
@@ -33,10 +33,9 @@ const HowToUse = () => {
           </Accordion.Header>
           <Accordion.Body>
             <ol>
-              <li>Click "Add Grade Criteria"</li>
+              <li>Click "Add Grade Criteria".</li>
               <li>Enter the minimum and maximum grade values or choose a special grade.</li>
             </ol>
-            
             <div className="alert alert-warning mt-3">
               <strong>Note:</strong> Grade ranges cannot overlap, and special grades must be unique.
             </div>
@@ -51,14 +50,10 @@ const HowToUse = () => {
           <Accordion.Body>
             <ul>
               <li>Enter the grade you'd like to assign to the selected range.</li>
-              <li>This step is optional — leaving it blank 
-                will keep the original grades unchanged.</li>
+              <li>This step is optional — leaving it blank keeps the original grades unchanged.</li>
             </ul>
-            
             <div className="alert alert-warning mt-3">
-              <strong>Note:</strong> The grade you select won't be influenced 
-              by other criteria. For example, if you change grades from 0 – 64 to 55, 
-              another criteria for 55 – 65 won't affect that student. 
+              <strong>Note:</strong> The grade you select won't be influenced by other criteria.
             </div>
           </Accordion.Body>
         </Accordion.Item>
@@ -70,7 +65,7 @@ const HowToUse = () => {
           </Accordion.Header>
           <Accordion.Body>
             <ul>
-              <li>Enter up to three comment codes. </li>
+              <li>Enter up to three comment codes.</li>
               <li>You can search for a comment by typing its code or text.</li>
             </ul>
             <div className="alert alert-warning mt-3">
@@ -98,165 +93,52 @@ const HowToUse = () => {
           </Accordion.Header>
           <Accordion.Body>
             <ol>
-              <li>Review all grade rules and comments. 
-              To make changes, click the "Edit" button.</li>
-              <li>If all details are correct, click "Process Grades"</li>
-              {/* <li>The download link will appear once the file is ready, 
-                which may take up to a minute.</li> */}
+              <li>Review all grade rules and comments.</li>
+              <li>If everything is correct, click "Process Grades".</li>
               <li>Once processing is complete, click "Download Processed File" to save it.</li>
-              {/* <li>Your file will contain your original grades, the updated grades and all comments specified.</li> */}
-              <li>Open the file and paste the new grades and comments into your EGG file.</li>
-
-            <div className="alert alert-info mt-3">
-              <strong>Tip:</strong> To paste, use <strong>CTRL + SHIFT + V (Windows)</strong> or <strong>CMD + SHIFT + V (Mac)</strong>. This will keep the formatting of the original EGG file. 
-            </div>
-            <li>Upload your EGG file to STARS.</li>
+              <li>Paste the new grades and comments into your EGG file and upload it to STARS.</li>
+            </ol>
             <div className="alert alert-danger mt-3">
               <strong>Note:</strong> Always verify processed grades before uploading to STARS.
             </div>
-            </ol>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+
+      {/* 📌 FAQ Section */}
+      <h3 className="mb-3 mt-5 text-center"><FaQuestionCircle className="me-2" /> Frequently Asked Questions</h3>
+
+      <Accordion flush>
+
+        <Accordion.Item eventKey="1">
+          <Accordion.Header>Does the EGG File Processor save my grade criteria?</Accordion.Header>
+          <Accordion.Body>
+            Yes, your grading criteria is saved locally in your browser using <strong>localStorage</strong>. 
+            This means your settings remain available even after you close or refresh the page.
+            However, if you switch devices or clear your browser storage, your criteria will not be saved.
           </Accordion.Body>
         </Accordion.Item>
 
-        <Accordion.Item eventKey="6">
-      <Accordion.Header>
-            <FaFileAlt className="me-2" /> View Sample Grade Criteria & Egg File Changes
-    </Accordion.Header>
-    <Accordion.Body>
-      {/* Visual Example Section */}
-      <section className="mt-5">
-        {/* <h4 className="mb-3">Grade Processing Example</h4> */}
-        <div className="row">
-          <div className="col-12">
-            <Card className="mb-4">
-              <Card.Body>
-              <h5 className="mb-3">Sample Grade Criteria</h5>
-              <table className="table table-sm">
-                  <thead>
-                    <tr>
-                      <th>Grade Range</th>
-                      <th>Adjusted Grade</th>
-                      <th>Comment 1</th>
-                      <th>Comment 2</th>
-                      <th>Comment 3</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className='bg-danger'>0 - 64</td>
-                      <td className='bg-danger'>55</td>
-                      <td className='bg-danger'>527</td>
-                      <td className='bg-danger'>2060</td>
-                      <td className='bg-danger'>502</td>
-                    </tr>   
-                    <tr>
-                      <td className='bg-orange'>65 - 69</td>
-                      <td className='bg-orange'></td>
-                      <td className='bg-orange'>521</td>
-                      <td className='bg-orange'>2060</td>
-                      <td className='bg-orange'>502</td>
-                    </tr>
-                    <tr>
-                      <td className='bg-yellow'>70 - 79</td>
-                      <td className='bg-yellow'></td>
-                      <td className='bg-yellow'>513</td>
-                      <td className='bg-yellow'>528</td>
-                      <td className='bg-yellow'>502</td>
-                    </tr>
-                    <tr>
-                      <td className='bg-success'>80 - 89</td>
-                      <td className='bg-success'></td>
-                      <td className='bg-success'>518</td>
-                      <td className='bg-success'>522</td>
-                      <td className='bg-success'>502</td>
-                    </tr>
-                    <tr>
-                      <td className='bg-primary'>90 - 100</td>
-                      <td className='bg-primary'></td>
-                      <td className='bg-primary'>519</td>
-                      <td className='bg-primary'>518</td>
-                      <td className='bg-primary'>502</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <h4 className='m-4'><FaArrowDown /></h4>
-                <h5 className="mb-3">Sample EGG File Changes</h5>
-                <table className="table table-sm">
-                  <thead>
-                    <tr>
-                      <th>Original Mark</th>
-                      <th>Adjusted Grade</th>
-                      <th>Comment 1</th>
-                      <th>Comment 2</th>
-                      <th>Comment 3</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className='bg-danger'>22</td>
-                      <td className='bg-danger'>55</td>
-                      <td className='bg-danger'>527</td>
-                      <td className='bg-danger'>2060</td>
-                      <td className='bg-danger'>502</td>
-                    </tr>
-                    <tr>
-                      <td className='bg-danger'>63</td>
-                      <td className='bg-danger'>55</td>
-                      <td className='bg-danger'>527</td>
-                      <td className='bg-danger'>2060</td>
-                      <td className='bg-danger'>502</td>
-                    </tr>
-                    <tr>
-                      <td className='bg-orange'>69</td>
-                      <td className='bg-orange'>69</td>
-                      <td className='bg-orange'>521</td>
-                      <td className='bg-orange'>2060</td>
-                      <td className='bg-orange'>502</td>
-                    </tr>
-                    <tr>
-                      <td className='bg-yellow'>70</td>
-                      <td className='bg-yellow'>70</td>
-                      <td className='bg-yellow'>513</td>
-                      <td className='bg-yellow'>528</td>
-                      <td className='bg-yellow'>502</td>
-                    </tr>
-                    <tr>
-                      <td className='bg-yellow'>74</td>
-                      <td className='bg-yellow'>74</td>
-                      <td className='bg-yellow'>513</td>
-                      <td className='bg-yellow'>528</td>
-                      <td className='bg-yellow'>502</td>
-                    </tr>
-                    <tr>
-                      <td className='bg-success'>82</td>
-                      <td className='bg-success'>82</td>
-                      <td className='bg-success'>518</td>
-                      <td className='bg-success'>522</td>
-                      <td className='bg-success'>502</td>
-                    </tr>
-                    <tr>
-                      <td className='bg-primary'>94</td>
-                      <td className='bg-primary'>94</td>
-                      <td className='bg-primary'>519</td>
-                      <td className='bg-primary'>518</td>
-                      <td className='bg-primary'>502</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </Card.Body>
-            </Card>
-          </div>
-        </div>
-      </section>
-      <div className="mt-4 p-3 bg-light rounded important-notes">
-        <h5 className='mb-3'>Important Notes:</h5>
-        <ul className="text-left"> {/* Add text-left class here */}
-          <li>Grade ranges are inclusive, meaning a range of 55–65 will include grades 55 and 65. </li>
-          <li>If a grade is not covered by any range or no grade change or comment is specified, the cell will remain unchanged and no comments will be added.</li>
-        </ul>
-      </div>
-      </Accordion.Body>
-      </Accordion.Item>
+        <Accordion.Item eventKey="2">
+          <Accordion.Header>What happens if I don’t specify adjusted grades?</Accordion.Header>
+          <Accordion.Body>
+            If you leave the "change to" field blank, the original grades will remain unchanged.
+          </Accordion.Body>
+        </Accordion.Item>
+
+        <Accordion.Item eventKey="3">
+          <Accordion.Header>Can I add overlapping grade ranges?</Accordion.Header>
+          <Accordion.Body>
+            No, overlapping grade ranges are not allowed. Each range must be unique to avoid conflicts when processing grades. For special grades, no two criteria should have the same special grade.
+          </Accordion.Body>
+        </Accordion.Item>
+
+        <Accordion.Item eventKey="4">
+          <Accordion.Header>How do I remove or edit existing grade criteria?</Accordion.Header>
+          <Accordion.Body>
+            You can edit or remove grade criteria by using the <strong>Edit</strong> and <strong>Remove</strong> buttons within the rule list.
+          </Accordion.Body>
+        </Accordion.Item>
       </Accordion>
     </div>
   );
