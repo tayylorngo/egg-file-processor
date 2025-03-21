@@ -23,10 +23,10 @@ doe_fill = PatternFill(
 )
 
 thin_border = Border(
-    left=Side(style='thin'),
-    right=Side(style='thin'),
-    top=Side(style='thin'),
-    bottom=Side(style='thin')
+    left=Side(style='thin', color='FF808080'),
+    right=Side(style='thin', color='FF808080'),
+    top=Side(style='thin', color='FF808080'),
+    bottom=Side(style='thin', color='FF808080')
 )
 
 # ✅ Left/top alignment like DOE file
