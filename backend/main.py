@@ -2,7 +2,7 @@ from fastapi import FastAPI, Form, HTTPException
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from openpyxl import Workbook
-from openpyxl.styles import PatternFill, Alignment
+from openpyxl.styles import PatternFill, Alignment, Border, Side
 from io import BytesIO
 import json
 
@@ -20,6 +20,13 @@ app.add_middleware(
 doe_fill = PatternFill(
     patternType="solid",
     fgColor="DDEBF7"
+)
+
+thin_border = Border(
+    left=Side(style='thin'),
+    right=Side(style='thin'),
+    top=Side(style='thin'),
+    bottom=Side(style='thin')
 )
 
 # ✅ Left/top alignment like DOE file
@@ -83,6 +90,7 @@ async def process_grades(grades: str = Form(...), rules: str = Form(...)):
         updated_cell.number_format = "General"
         updated_cell.fill = doe_fill
         updated_cell.alignment = left_top_align
+        updated_cell.border = thin_border
 
         # ✅ Comment 1–3: format always applied
         for i, comment in enumerate(comments):
@@ -92,6 +100,7 @@ async def process_grades(grades: str = Form(...), rules: str = Form(...)):
             cell.number_format = "General"
             cell.fill = doe_fill
             cell.alignment = left_top_align
+            cell.border = thin_border
 
     output = BytesIO()
     workbook.save(output)
