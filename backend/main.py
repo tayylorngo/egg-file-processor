@@ -2,6 +2,7 @@ from fastapi import FastAPI, Form, HTTPException
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from openpyxl import Workbook
+from openpyxl.styles import PatternFill, Alignment
 from io import BytesIO
 import json
 
@@ -14,6 +15,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ✅ Exact DOE blue (RGB 221, 235, 247)
+doe_fill = PatternFill(
+    patternType="solid",
+    fgColor="DDEBF7"
+)
+
+# ✅ Left/top alignment like DOE file
+left_top_align = Alignment(horizontal='left', vertical='top')
 
 @app.post("/process/")
 async def process_grades(grades: str = Form(...), rules: str = Form(...)):
@@ -40,17 +50,14 @@ async def process_grades(grades: str = Form(...), rules: str = Form(...)):
             rule_comments = rule.get("comments", ["", "", ""])
             special = rule.get("specialGrade")
 
-            # ✅ Handle special grades
             if isinstance(special, dict) and special.get("value"):
-                special_value = special["value"].strip().upper()
-                if grade.strip().upper() == special_value:
+                if grade.strip().upper() == special["value"].strip().upper():
                     change_to = rule.get("changeTo")
-                    if change_to not in (None, "N/A"):
+                    if change_to and change_to != "N/A":
                         updated_grade = change_to
                     comments = ["" if c == "N/A" else c for c in rule_comments]
                     break
 
-            # ✅ Handle numeric grades
             elif special in (None, {}, "", "N/A"):
                 try:
                     grade_num = float(grade)
@@ -58,15 +65,33 @@ async def process_grades(grades: str = Form(...), rules: str = Form(...)):
                     max_grade = float(rule.get("maxGrade", 100))
                     if min_grade <= grade_num <= max_grade:
                         change_to = rule.get("changeTo")
-                        if change_to not in (None, "N/A"):
-                            updated_grade = float(change_to)
+                        if change_to and change_to != "N/A":
+                            updated_grade = change_to
                         comments = ["" if c == "N/A" else c for c in rule_comments]
                         break
                 except ValueError:
-                    # Not a numeric grade → skip this rule
                     continue
 
-        sheet.append([grade, updated_grade] + comments)
+        row_idx = sheet.max_row + 1
+
+        # Original Grade (no formatting)
+        sheet.cell(row=row_idx, column=1, value=grade)
+
+        # ✅ Updated Grade: format always applied
+        updated_cell = sheet.cell(row=row_idx, column=2)
+        updated_cell.value = str(updated_grade) if updated_grade is not None else ""
+        updated_cell.number_format = "General"
+        updated_cell.fill = doe_fill
+        updated_cell.alignment = left_top_align
+
+        # ✅ Comment 1–3: format always applied
+        for i, comment in enumerate(comments):
+            col_idx = 3 + i
+            cell = sheet.cell(row=row_idx, column=col_idx)
+            cell.value = str(comment) if comment else ""
+            cell.number_format = "General"
+            cell.fill = doe_fill
+            cell.alignment = left_top_align
 
     output = BytesIO()
     workbook.save(output)
@@ -77,5 +102,3 @@ async def process_grades(grades: str = Form(...), rules: str = Form(...)):
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": "attachment; filename=processed_grades.xlsx"},
     )
-
-#changes
