@@ -4,6 +4,10 @@ import "../GradeRuleModal/GradeRuleModal.css"; // Ensure it shares the same styl
 import commentsData from "../comments.json";
 import specialGradesData from "../specialGrades.json";
 import "bootstrap/dist/css/bootstrap.css";
+import { Range } from "react-range"; // Import Range from react-range
+
+const ABSENCE_MIN = 0;
+const ABSENCE_MAX = 46;
 
 const generateGradeOptions = () => {
   let options = Array.from({ length: 101 }, (_, i) => ({
@@ -24,6 +28,9 @@ const GradeRuleEditModal = ({ isOpen, onClose, onEditRule, rules, editedRuleInde
 
   const [commentOptions, setCommentOptions] = useState([]);
   const [specialGrades, setSpecialGrades] = useState([]);
+  const [minAbsence, setMinAbsence] = useState(ABSENCE_MIN);
+  const [maxAbsence, setMaxAbsence] = useState(ABSENCE_MAX);
+  const [useAbsence, setUseAbsence] = useState(false);
   const gradeOptions = generateGradeOptions();
 
   // Reset form logic
@@ -37,6 +44,9 @@ const GradeRuleEditModal = ({ isOpen, onClose, onEditRule, rules, editedRuleInde
     setComment1(rule.comments?.[0] || "");
     setComment2(rule.comments?.[1] || "");
     setComment3(rule.comments?.[2] || "");
+    setUseAbsence(!!rule.absenceRange);
+    setMinAbsence(rule.absenceRange?.min ?? ABSENCE_MIN);
+    setMaxAbsence(rule.absenceRange?.max ?? ABSENCE_MAX);
   }, [editedRuleIndex, rules]);
 
   // Load options from JSON
@@ -101,6 +111,12 @@ const GradeRuleEditModal = ({ isOpen, onClose, onEditRule, rules, editedRuleInde
         changeTo: Number(changeTo?.value) || "N/A",
         specialGrade,
         comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
+        ...(useAbsence && {
+          absenceRange: {
+            min: minAbsence,
+            max: maxAbsence,
+          },
+        }),
       };
     } else {
       newRule = {
@@ -109,6 +125,12 @@ const GradeRuleEditModal = ({ isOpen, onClose, onEditRule, rules, editedRuleInde
         changeTo: Number(changeTo?.value) || "N/A",
         specialGrade: null,
         comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
+        ...(useAbsence && {
+          absenceRange: {
+            min: minAbsence,
+            max: maxAbsence,
+          },
+        }),
       };
     }
 
@@ -196,6 +218,50 @@ const GradeRuleEditModal = ({ isOpen, onClose, onEditRule, rules, editedRuleInde
               />
             </div>
           </div>
+
+          <div className="form-group d-flex align-items-center">
+            <label className="me-3">Use Absence Criteria:</label>
+            <div className="form-switch">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="absenceToggle"
+                checked={useAbsence}
+                onChange={() => setUseAbsence(!useAbsence)}
+                style={{ width: "2.5em", height: "1.5em" }}
+              />
+            </div>
+          </div>
+
+          {useAbsence && (
+            <div className="form-group">
+              <label>Absences: {minAbsence}-{maxAbsence}</label>
+              <div style={{ margin: '1rem 0', padding: '0 1rem' }}>
+                <Range
+                  step={1}
+                  min={ABSENCE_MIN}
+                  max={ABSENCE_MAX}
+                  values={[minAbsence, maxAbsence]}
+                  onChange={([min, max]) => {
+                    setMinAbsence(min);
+                    setMaxAbsence(max);
+                  }}
+                  renderTrack={({ props, children }) => (
+                    <div {...props} className="absence-slider-track">
+                      {children}
+                    </div>
+                  )}
+                  renderThumb={({ props, index }) => (
+                    <div {...props} className="absence-slider-thumb">
+                      <span className="absence-slider-label">
+                        {[minAbsence, maxAbsence][index]}
+                      </span>
+                    </div>
+                  )}
+                />
+              </div>
+            </div>
+          )}
 
           <div className="form-row">
             <div className="form-group">
