@@ -16,10 +16,11 @@ const GradeRuleList = ({ rules, openDeleteRuleModal, openEditRuleModal }) => {
           <thead>
             <tr>
               <th className="text-center align-middle">Grade Range</th>
+              <th className="text-center align-middle">Absences</th>
               <th className="text-center align-middle">Adjusted Grade</th>
-              <th className="text-center align-middle">Comment 1</th>
-              <th className="text-center align-middle">Comment 2</th>
-              <th className="text-center align-middle">Comment 3</th>
+              <th className="text-center align-middle">C1</th>
+              <th className="text-center align-middle">C2</th>
+              <th className="text-center align-middle">C3</th>
               <th className="text-center align-middle">Actions</th>
             </tr>
           </thead>
@@ -41,6 +42,9 @@ const GradeRuleList = ({ rules, openDeleteRuleModal, openEditRuleModal }) => {
                       {rule.minGrade +  " - " + rule.maxGrade}
                   </td>
                 }
+                <td className="text-center align-middle">
+                  {rule.absenceRange ? `${rule.absenceRange.min} - ${rule.absenceRange.max}` : "—"}
+                </td>
                 <td className="text-center align-middle">{rule.changeTo}</td>
                 <td 
                     className="text-center align-middle"
