@@ -57,7 +57,6 @@ function Home() {
     setLoading(true);
   
     try {
-      // const BASE_URL = "https://swift-grades.onrender.com";
       const BASE_URL = "http://127.0.0.1:8000"; 
       const endpoint = "/process/";
       const response = await fetch(`${BASE_URL}${endpoint}`, {
@@ -69,11 +68,9 @@ function Home() {
         throw new Error("Failed to process grades.");
       }
   
-      // ✅ Convert response to blob (Excel file)
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
   
-      // ✅ Set the download URL for the processed file
       setDownloadUrl(url);
       setMessage("Grades processed successfully! Click the button below to download the file.");
     } catch (error) {
@@ -85,7 +82,6 @@ function Home() {
   };
   
 
-  // Open or close the modal
   const toggleCreateRuleModal = () => {
     setIsCreateModalOpen(!isCreateModalOpen);
   };
@@ -101,28 +97,22 @@ function Home() {
     setIsDeleteModalOpen(!isDeleteModalOpen);
   };
 
-  // Add a new rule
   const handleAddRule = (newRule) => {
     setRules((prevRules) => {
-      // Append new rule
       const updatedRules = [...prevRules, newRule];
   
-      // Sort Rules with a custom function
       return updatedRules.sort((a, b) => {
         const aHasNullGrade = a.minGrade === null || a.maxGrade === null;
         const bHasNullGrade = b.minGrade === null || b.maxGrade === null;
   
-        // Case 1: Both have valid min/max grades → Sort numerically
         if (!aHasNullGrade && !bHasNullGrade) {
           return a.minGrade - b.minGrade || a.maxGrade - b.maxGrade;
         }
   
-        // Case 2: Only one has null min/max → Move the one with null to the end
         if (aHasNullGrade && !bHasNullGrade) return 1;
         if (!aHasNullGrade && bHasNullGrade) return -1;
   
-        // Case 3: Both have null min/max → Sort by specialGrade alphabetically
-        const specialA = String(a.specialGrade || ""); // Ensure it's a string
+        const specialA = String(a.specialGrade || ""); 
         const specialB = String(b.specialGrade || "");
   
         return specialA.localeCompare(specialB);
@@ -130,41 +120,32 @@ function Home() {
     });
   };
 
-  // Remove a rule
   const handleRemoveRule = (index) => {
     setRules(rules.filter((_, i) => i !== index));
   };
 
-  // Remove all rule
   const handleRemoveAllRules = () => {
     setIsDeleteAll(false);
     setRules([]);
   };
 
-  // Edit a rule
   const handleEditRule = (editedRule) => {
     setRules((rules) => {
-      // Create a new array (immutable update)
       const newRules = [...rules];
-      // Update the specific rule
       newRules[editingRule] = editedRule;
   
-      // Sort Rules with a custom function
       newRules.sort((a, b) => {
         const aHasNullGrade = a.minGrade === null || a.maxGrade === null;
         const bHasNullGrade = b.minGrade === null || b.maxGrade === null;
   
-        // Case 1: Both have valid min/max grades → Sort numerically
         if (!aHasNullGrade && !bHasNullGrade) {
           return a.minGrade - b.minGrade || a.maxGrade - b.maxGrade;
         }
   
-        // Case 2: Only one has null min/max → Move the one with null to the end
         if (aHasNullGrade && !bHasNullGrade) return 1;
         if (!aHasNullGrade && bHasNullGrade) return -1;
   
-        // Case 3: Both have null min/max → Sort by specialGrade alphabetically
-        const specialA = String(a.specialGrade || ""); // Ensure it's a string
+        const specialA = String(a.specialGrade || ""); 
         const specialB = String(b.specialGrade || "");
   
         return specialA.localeCompare(specialB);
@@ -180,13 +161,23 @@ function Home() {
       <h1 className="fs-1">EGG File Processor</h1>
       <p className="mb-1 fs-5">Paste grades from EGG file and define your grade criteria.</p>
 
-      <textarea 
-        className="form-control" 
-        rows="6" 
-        placeholder="Copy and paste your grades here..." 
-        value={grades} 
-        onChange={(e) => setGrades(e.target.value)}
-      ></textarea>
+      <div className="d-flex gap-3">
+        <textarea 
+          className="form-control" 
+          rows="6" 
+          placeholder="Copy and paste your grades here..." 
+          value={grades} 
+          onChange={(e) => setGrades(e.target.value)}
+          style={{ flex: "8" }}
+        ></textarea>
+        
+        <textarea 
+          className="form-control" 
+          rows="6" 
+          placeholder="Paste absences here (optional)..." 
+          style={{ flex: "2" }}
+        ></textarea>
+      </div>
 
       <div className="mt-1 border border-1 mb-2 p-3 text-center">
       <GradeRuleList
@@ -223,7 +214,7 @@ function Home() {
 
       <p className="message mt-3">{message}</p>
 
-      {loading && <Spinner />} {/* Show Spinner when loading is true */}
+      {loading && <Spinner />} 
       
       {downloadUrl && (
         <a href={downloadUrl} download="processed_grades.xlsx" className="btn btn-primary">
