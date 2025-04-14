@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
+import { Range } from 'react-range';
 import "./GradeRuleModal.css";
 import commentsData from "../comments.json";
 import specialGradesData from "../specialGrades.json";
@@ -11,6 +12,9 @@ const generateGradeOptions = () => {
 };
 
 const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
+  const ABSENCE_MIN = 0;
+  const ABSENCE_MAX = 46;
+
   const [minGrade, setMinGrade] = useState(null);
   const [maxGrade, setMaxGrade] = useState(null);
   const [changeTo, setChangeTo] = useState(null);
@@ -18,6 +22,10 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
   const [comment1, setComment1] = useState("");
   const [comment2, setComment2] = useState("");
   const [comment3, setComment3] = useState("");
+  
+  const [minAbsence, setMinAbsence] = useState(0);
+  const [maxAbsence, setMaxAbsence] = useState(46);
+  const [useAbsence, setUseAbsence] = useState(false);
 
   const [commentOptions, setCommentOptions] = useState([]);
   const [specialGrades, setSpecialGrades] = useState([]);
@@ -57,6 +65,9 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
     setComment1("");
     setComment2("");
     setComment3("");
+    setMinAbsence(0);
+    setMaxAbsence(46);
+    setUseAbsence(false);
   };
 
   const doesOverlap = (newRule, rules) => {
@@ -98,6 +109,12 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
             changeTo: Number(changeTo?.value) || "N/A",
             specialGrade: specialGrade,
             comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
+            ...(useAbsence && {
+              absenceRange: {
+                min: minAbsence,
+                max: maxAbsence,
+              },
+            }),
         };
       }
       else {
@@ -107,6 +124,12 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
           changeTo: Number(changeTo?.value) || "N/A",
           specialGrade: null,
           comments: [comment1 || "N/A", comment2 || "N/A", comment3 || "N/A"],
+          ...(useAbsence && {
+            absenceRange: {
+              min: minAbsence,
+              max: maxAbsence,
+            },
+          }),
       };
     }
   
@@ -117,6 +140,11 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
 
     if (Number(minGrade?.value) > Number(maxGrade?.value)){
       alert("Minimum grade cannot be greater than maximum grade. Please adjust the range.")
+      return;
+    }
+
+    if (minAbsence && maxAbsence && Number(minAbsence) > Number(maxAbsence)) {
+      alert("Minimum absences cannot be greater than maximum absences.");
       return;
     }
 
@@ -145,7 +173,7 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
   return (
     <div className="modal-overlay centered-modal">
       <div className="modal-content">
-        <h2 className="modal-title">Add Grade Criteria</h2>
+        <h3 className="modal-title">Add Grade Criteria</h3>
         <form onSubmit={handleSubmit}>
           <div className="form-row">
             <div className="form-group half-width">
@@ -214,7 +242,51 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
                 />
             </div>
           </div>
-          
+
+          <div className="form-group d-flex align-items-center">
+            <label className="me-3">Use Attendance Criteria:</label>
+            <div className="form-switch">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="absenceToggle"
+                checked={useAbsence}
+                onChange={() => setUseAbsence(!useAbsence)}
+                style={{ width: "2.5em", height: "1.5em" }}
+              />
+            </div>
+          </div>
+
+          {useAbsence && (
+            <div className="form-group">
+              <label>Absences: {minAbsence} - {maxAbsence}</label>
+              <div style={{ margin: '1rem 0', padding: '0 1rem' }}>
+                <Range
+                  step={1}
+                  min={ABSENCE_MIN}
+                  max={ABSENCE_MAX}
+                  values={[minAbsence, maxAbsence]}
+                  onChange={([min, max]) => {
+                    setMinAbsence(min);
+                    setMaxAbsence(max);
+                  }}
+                  renderTrack={({ props, children }) => (
+                    <div {...props} className="absence-slider-track">
+                      {children}
+                    </div>
+                  )}
+                  renderThumb={({ props, index }) => (
+                    <div {...props} className="absence-slider-thumb">
+                      <span className="absence-slider-label">
+                        {[minAbsence, maxAbsence][index]}
+                      </span>
+                    </div>
+                  )}
+                />
+              </div>
+            </div>
+          )}
+
           <div className="form-row">
             <div className="form-group">
               <label>Special Grade: </label>
@@ -300,6 +372,7 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
                 className="select-form comment-select"
               />
             </div>
+
           <div className="text-center row form-group">
             <button type="submit" className="btn btn-success mb-1">
               Add
