@@ -10,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.css"
 function Home() {
   
   const [grades, setGrades] = useState("");
+  const [absences, setAbsences] = useState("");
   const [rules, setRules] = useState(() => {
     try {
       const savedRules = localStorage.getItem('gradeRules');
@@ -51,6 +52,7 @@ function Home() {
   
     const formData = new FormData();
     formData.append("grades", grades);
+    formData.append("absences", absences);
     formData.append("rules", JSON.stringify(rules));
   
     setMessage("");
@@ -175,6 +177,8 @@ function Home() {
           className="form-control" 
           rows="6" 
           placeholder="Paste absences here (optional)..." 
+          value={absences}
+          onChange={(e) => setAbsences(e.target.value)}
           style={{ flex: "2" }}
         ></textarea>
       </div>

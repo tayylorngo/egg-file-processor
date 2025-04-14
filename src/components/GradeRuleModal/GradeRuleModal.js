@@ -77,17 +77,50 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
   
       // Case 1: Both rules have numeric grades → Check range overlap
       if (newHasGrades && ruleHasGrades) {
-        return (
-          (newRule.minGrade >= rule.minGrade && newRule.minGrade <= rule.maxGrade) || // New min is inside existing range
-          (newRule.maxGrade >= rule.minGrade && newRule.maxGrade <= rule.maxGrade) || // New max is inside existing range
-          (rule.minGrade >= newRule.minGrade && rule.minGrade <= newRule.maxGrade) || // Existing min is inside new range
-          (rule.maxGrade >= newRule.minGrade && rule.maxGrade <= newRule.maxGrade)    // Existing max is inside new range
+        const gradesOverlap = (
+          (newRule.minGrade >= rule.minGrade && newRule.minGrade <= rule.maxGrade) ||
+          (newRule.maxGrade >= rule.minGrade && newRule.maxGrade <= rule.maxGrade) ||
+          (rule.minGrade >= newRule.minGrade && rule.minGrade <= newRule.maxGrade) ||
+          (rule.maxGrade >= newRule.minGrade && rule.maxGrade <= newRule.maxGrade)
         );
+
+        if (gradesOverlap) {
+          // Block if one has no absenceRange and the other does
+          if ((!newRule.absenceRange && rule.absenceRange) || (newRule.absenceRange && !rule.absenceRange)) {
+            return true;
+          }
+
+          // Allow overlap only if both absence ranges overlap
+          const bothHaveAbsences = newRule.absenceRange && rule.absenceRange;
+
+          const absencesOverlap = bothHaveAbsences
+            ? (
+                (newRule.absenceRange.min >= rule.absenceRange.min && newRule.absenceRange.min <= rule.absenceRange.max) ||
+                (newRule.absenceRange.max >= rule.absenceRange.min && newRule.absenceRange.max <= rule.absenceRange.max) ||
+                (rule.absenceRange.min >= newRule.absenceRange.min && rule.absenceRange.min <= newRule.absenceRange.max) ||
+                (rule.absenceRange.max >= newRule.absenceRange.min && rule.absenceRange.max <= newRule.absenceRange.max)
+              )
+            : !newRule.absenceRange && !rule.absenceRange;
+
+          return absencesOverlap;
+        }
+        return false;
       }
   
       // Case 2: If both rules have special grades, check for exact match
       if (!newHasGrades && !ruleHasGrades) {
-        return newRule.specialGrade.value === rule.specialGrade.value; // Avoid duplicate special grades
+        const specialMatch = newRule.specialGrade.value === rule.specialGrade.value;
+        const bothHaveAbsences = newRule.absenceRange && rule.absenceRange;
+
+        const absencesOverlap = bothHaveAbsences
+          ? (
+              (newRule.absenceRange.min >= rule.absenceRange.min && newRule.absenceRange.min <= rule.absenceRange.max) ||
+              (newRule.absenceRange.max >= rule.absenceRange.min && newRule.absenceRange.max <= rule.absenceRange.max) ||
+              (rule.absenceRange.min >= newRule.absenceRange.min && rule.absenceRange.min <= newRule.absenceRange.max) ||
+              (rule.absenceRange.max >= newRule.absenceRange.min && rule.absenceRange.max <= newRule.absenceRange.max)
+            )
+          : !newRule.absenceRange && !rule.absenceRange;
+        return specialMatch && absencesOverlap;
       }
   
       // Case 3: If one rule has grades and the other has a special grade, they do NOT overlap
@@ -151,7 +184,11 @@ const GradeRuleModal = ({ isOpen, onClose, onAddRule, rules }) => {
     // Checking for overlapping ranges in existing rules
     const existingRules = Array.isArray(rules) ? rules : [];
     if (doesOverlap(newRule, existingRules)) {
-        alert("Grade range overlaps with an existing rule. Please adjust the range.");
+        if (!newRule.absenceRange) {
+          alert("There is already a rule with this grade range that includes absence criteria. You must specify an absence range to add another rule in this range.");
+        } else {
+          alert("Grade and absence range overlaps with an existing rule. Please adjust the range.");
+        }
         return;
     }
 

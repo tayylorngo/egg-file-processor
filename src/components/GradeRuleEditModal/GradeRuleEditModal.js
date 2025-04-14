@@ -83,17 +83,52 @@ const GradeRuleEditModal = ({ isOpen, onClose, onEditRule, rules, editedRuleInde
 
       // Case 1: Both have numeric grades → Check overlap
       if (newHasGrades && ruleHasGrades) {
-        return (
+        const gradesOverlap = (
           (newRule.minGrade >= rule.minGrade && newRule.minGrade <= rule.maxGrade) ||
           (newRule.maxGrade >= rule.minGrade && newRule.maxGrade <= rule.maxGrade) ||
           (rule.minGrade >= newRule.minGrade && rule.minGrade <= newRule.maxGrade) ||
           (rule.maxGrade >= newRule.minGrade && rule.maxGrade <= newRule.maxGrade)
         );
+
+        if (gradesOverlap) {
+          // Block if one has no absenceRange and the other does
+          if ((!newRule.absenceRange && rule.absenceRange) || (newRule.absenceRange && !rule.absenceRange)) {
+            return true;
+          }
+
+          // Allow overlap only if both absence ranges overlap
+          const bothHaveAbsences = newRule.absenceRange && rule.absenceRange;
+
+          const absencesOverlap = bothHaveAbsences
+            ? (
+                (newRule.absenceRange.min >= rule.absenceRange.min && newRule.absenceRange.min <= rule.absenceRange.max) ||
+                (newRule.absenceRange.max >= rule.absenceRange.min && newRule.absenceRange.max <= rule.absenceRange.max) ||
+                (rule.absenceRange.min >= newRule.absenceRange.min && rule.absenceRange.min <= newRule.absenceRange.max) ||
+                (rule.absenceRange.max >= newRule.absenceRange.min && rule.absenceRange.max <= newRule.absenceRange.max)
+              )
+            : !newRule.absenceRange && !rule.absenceRange;
+
+          return absencesOverlap;
+        }
+        return false;
       }
 
       // Case 2: Both rules have special grades → Check duplicate
       if (!newHasGrades && !ruleHasGrades) {
-        return newRule.specialGrade.value === rule.specialGrade.value;
+        const specialMatch = newRule.specialGrade.value === rule.specialGrade.value;
+
+        const bothHaveAbsences = newRule.absenceRange && rule.absenceRange;
+
+        const absencesOverlap = bothHaveAbsences
+          ? (
+              (newRule.absenceRange.min >= rule.absenceRange.min && newRule.absenceRange.min <= rule.absenceRange.max) ||
+              (newRule.absenceRange.max >= rule.absenceRange.min && newRule.absenceRange.max <= rule.absenceRange.max) ||
+              (rule.absenceRange.min >= newRule.absenceRange.min && rule.absenceRange.min <= newRule.absenceRange.max) ||
+              (rule.absenceRange.max >= newRule.absenceRange.min && rule.absenceRange.max <= newRule.absenceRange.max)
+            )
+          : !newRule.absenceRange && !rule.absenceRange;
+
+        return specialMatch && absencesOverlap;
       }
 
       return false;
@@ -145,7 +180,11 @@ const GradeRuleEditModal = ({ isOpen, onClose, onEditRule, rules, editedRuleInde
     }
 
     if (doesOverlap(newRule, rules)) {
-      alert("Grade range overlaps with an existing rule.");
+      if (!newRule.absenceRange) {
+        alert("There is already a rule with this grade range that includes absence criteria. You must specify an absence range to add another rule in this range.");
+      } else {
+        alert("Grade and absence range overlaps with an existing rule. Please adjust the range.");
+      }
       return;
     }
 
