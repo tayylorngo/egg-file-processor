@@ -59,7 +59,8 @@ function Home() {
     setLoading(true);
   
     try {
-      const BASE_URL = "http://127.0.0.1:8000"; 
+      const BASE_URL = "https://swift-grades.onrender.com";
+      // const BASE_URL = "http://127.0.0.1:8000"; 
       const endpoint = "/process/";
       const response = await fetch(`${BASE_URL}${endpoint}`, {
         method: "POST",
