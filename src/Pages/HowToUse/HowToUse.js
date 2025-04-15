@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaUpload, FaCommentDots, FaDownload, FaSlidersH, FaRegEdit, FaPlusCircle, FaQuestionCircle } from 'react-icons/fa';
+import { FaPeopleGroup } from "react-icons/fa6";
 import { Accordion } from 'react-bootstrap';
 import "./HowToUse.css";
 import "bootstrap/dist/css/bootstrap.css";
@@ -29,15 +30,15 @@ const HowToUse = () => {
         {/* Step 2 */}
         <Accordion.Item eventKey="1">
           <Accordion.Header>
-            <FaSlidersH className="me-2" /> Step 2: Define Grade Range
+            <FaPeopleGroup className="me-2" /> Step 2: Copy & paste attendance data from EGG file (Optional)
           </Accordion.Header>
           <Accordion.Body>
             <ol>
-              <li>Click "Add Grade Criteria".</li>
-              <li>Enter the minimum and maximum grade values or choose a special grade.</li>
+              <li>Copy the column containing all the absences in your EGG file on Microsoft Excel.</li>
+              <li>Paste it in the second textbox.</li>
             </ol>
             <div className="alert alert-warning mt-3">
-              <strong>Note:</strong> Grade ranges cannot overlap, and special grades must be unique.
+              <strong>Note:</strong> Each number should be separated by a new line.
             </div>
           </Accordion.Body>
         </Accordion.Item>
@@ -45,7 +46,24 @@ const HowToUse = () => {
         {/* Step 3 */}
         <Accordion.Item eventKey="2">
           <Accordion.Header>
-            <FaRegEdit className="me-2" /> Step 3: Change Grades (Optional)
+            <FaSlidersH className="me-2" /> Step 3: Define Grade Range
+          </Accordion.Header>
+          <Accordion.Body>
+            <ol>
+              <li>Click "Add Grade Criteria".</li>
+              <li>Enter the minimum and maximum grade values or choose a special grade.</li>
+              <li>If you choose to add attendance criteria, use the slider to select the range of absences.</li>
+            </ol>
+            <div className="alert alert-warning mt-3">
+              <strong>Note:</strong> Grade ranges cannot overlap, and special grades must be unique.
+            </div>
+          </Accordion.Body>
+        </Accordion.Item>
+
+        {/* Step 4 */}
+        <Accordion.Item eventKey="3">
+          <Accordion.Header>
+            <FaRegEdit className="me-2" /> Step 4: Change Grades (Optional)
           </Accordion.Header>
           <Accordion.Body>
             <ul>
@@ -58,10 +76,10 @@ const HowToUse = () => {
           </Accordion.Body>
         </Accordion.Item>
 
-        {/* Step 4 */}
-        <Accordion.Item eventKey="3">
+        {/* Step 5 */}
+        <Accordion.Item eventKey="4">
           <Accordion.Header>
-            <FaCommentDots className="me-2" /> Step 4: Add Report Card Comments (Optional)
+            <FaCommentDots className="me-2" /> Step 5: Add Report Card Comments (Optional)
           </Accordion.Header>
           <Accordion.Body>
             <ul>
@@ -74,22 +92,22 @@ const HowToUse = () => {
           </Accordion.Body>
         </Accordion.Item>
 
-        {/* Step 5 */}
-        <Accordion.Item eventKey="4">
+        {/* Step 6 */}
+        <Accordion.Item eventKey="5">
           <Accordion.Header>
-            <FaPlusCircle className="me-2"/> Step 5: Add Additional Grade Criteria (Optional)
+            <FaPlusCircle className="me-2"/> Step 6: Add Additional Grade Criteria (Optional)
           </Accordion.Header>
           <Accordion.Body>
             <ul>
-              <li>Repeat steps 2 - 4 to define more grade criteria if needed.</li>
+              <li>Repeat steps 3 - 5 to define more grade criteria if needed.</li>
             </ul>
           </Accordion.Body>
         </Accordion.Item>
 
-        {/* Step 6 */}
-        <Accordion.Item eventKey="5">
+        {/* Step 7 */}
+        <Accordion.Item eventKey="6">
           <Accordion.Header>
-            <FaDownload className="me-2" /> Step 6: Process & Download
+            <FaDownload className="me-2" /> Step 7: Process & Download
           </Accordion.Header>
           <Accordion.Body>
             <ol>
@@ -129,7 +147,12 @@ const HowToUse = () => {
         <Accordion.Item eventKey="3">
           <Accordion.Header>Can I add overlapping grade ranges?</Accordion.Header>
           <Accordion.Body>
-            No, overlapping grade ranges are not allowed. Each range must be unique to avoid conflicts when processing grades. For special grades, no two criteria should have the same special grade.
+            No, overlapping grade ranges are not allowed. 
+            Each range must be unique to avoid conflicts when processing grades. 
+            For special grades, no two criteria should have the same special grade.
+            Absence ranges cannot overlap for the same grade range. 
+            If a grade range is used without attendance criteria, 
+            no additional rules can use that same range—even with absences specified.
           </Accordion.Body>
         </Accordion.Item>
 
@@ -138,6 +161,12 @@ const HowToUse = () => {
           <Accordion.Body>
             You can edit or remove grade criteria by using the <strong>Edit</strong> and <strong>Remove</strong> buttons within the rule list.
           </Accordion.Body>
+        </Accordion.Item>
+
+        <Accordion.Item eventKey="5">
+          <Accordion.Header>What happens if I don't provide attendance data?</Accordion.Header>
+          <Accordion.Body>
+          Grade criteria based on attendance will be skipped if no absence data is provided.</Accordion.Body>
         </Accordion.Item>
       </Accordion>
     </div>
