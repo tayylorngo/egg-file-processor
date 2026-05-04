@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="eggBody" x1="20" y1="6" x2="48" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFF8EC" />
+      <stop offset="55%" stop-color="#FFE0A8" />
+      <stop offset="100%" stop-color="#F5B95C" />
+    </linearGradient>
+    <radialGradient id="eggHighlight" cx="0.35" cy="0.3" r="0.35">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Egg body -->
+  <ellipse cx="32" cy="36" rx="20" ry="26" fill="url(#eggBody)" stroke="#D9913B" stroke-width="1.2" />
+
+  <!-- Soft top highlight -->
+  <ellipse cx="32" cy="36" rx="20" ry="26" fill="url(#eggHighlight)" />
+
+  <!-- Subtle crack line -->
+  <path
+    d="M16 30 L21 34 L18 38 L24 41 L21 46 L27 48"
+    stroke="#A56321"
+    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+    opacity="0.55"
+  />
+
+  <!-- Checkmark accent (output / processed) -->
+  <path
+    d="M38 38 L43 43 L52 31"
+    stroke="#10B981"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+</svg>

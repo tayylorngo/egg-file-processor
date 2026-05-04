@@ -50,10 +50,10 @@ const NavbarTop = () => {
         </button>
 
         <div className="collapse navbar-collapse justify-content-center" id="navbarCenteredExample">
-          <ul className="navbar-nav mb-2 mb-lg-0">
+          <ul className="navbar-nav mb-2 mb-lg-0 align-items-center">
             <li className="nav-item">
               <Link className="navbar-brand d-flex justify-content-center" to="/">
-                <img src="favicon.ico" alt="Logo" width="30" height="30" />
+                <img src="logo.svg" alt="Logo" width="40" height="40" />
               </Link>
             </li>
             <li className="nav-item">

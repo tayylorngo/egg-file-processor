@@ -222,9 +222,15 @@ function Home() {
       {loading && <Spinner />} 
       
       {downloadUrl && (
-        <a href={downloadUrl} download="processed_grades.xlsx" className="btn btn-primary">
-          Download Processed Grades
-        </a>
+        <div className="d-flex justify-content-center mt-3">
+          <a
+            href={downloadUrl}
+            download="processed_grades.xlsx"
+            className="btn btn-primary"
+          >
+            Download Processed Grades
+          </a>
+        </div>
       )}
 
       <GradeRuleModal
