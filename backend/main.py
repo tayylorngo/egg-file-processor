@@ -5,12 +5,20 @@ from openpyxl import Workbook
 from openpyxl.styles import PatternFill, Alignment, Border, Side
 from io import BytesIO
 import json
+import os
 
 app = FastAPI()
 
+DEFAULT_CORS_ORIGINS = "http://localhost:3000,https://eggfileprocessor.netlify.app"
+allowed_origins = [
+    origin.strip()
+    for origin in os.environ.get("ALLOWED_ORIGINS", DEFAULT_CORS_ORIGINS).split(",")
+    if origin.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://eggfileprocessor.netlify.app"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
